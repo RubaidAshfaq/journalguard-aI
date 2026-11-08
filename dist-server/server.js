@@ -635,7 +635,7 @@ async function crawlJournalArchive(archiveUrl) {
       visitedArchivePages.add(currentUrl);
       const fetchResponse = await fetch(currentUrl, {
         headers: {
-          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) ShodhSetu Academic Crawler/1.0"
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Shodh Setu AI Academic Crawler/1.0"
         }
       });
       if (!fetchResponse.ok) break;
@@ -665,7 +665,7 @@ async function crawlJournalArchive(archiveUrl) {
         batch.map(async (iss) => {
           try {
             const res = await fetch(iss.url, {
-              headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) ShodhSetu/1.0" }
+              headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Shodh Setu AI/1.0" }
             });
             if (!res.ok) {
               return null;
@@ -1811,7 +1811,7 @@ async function startServer() {
   }
   const server = http.createServer(app);
   server.listen(PORT, "0.0.0.0", () => {
-    console.log(`JOURNALGUARD AI server running on http://0.0.0.0:${PORT}`);
+    console.log(`SHODH SETU AI server running on http://0.0.0.0:${PORT}`);
   });
 }
 startServer();

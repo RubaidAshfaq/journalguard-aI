@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Core Type Definitions
+ * SHODH SETU AI - Core Type Definitions
  * Concept & Academic Direction: Dr. Rubaid Ashfaq
  */
 

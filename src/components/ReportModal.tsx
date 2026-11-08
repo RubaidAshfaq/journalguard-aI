@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Formal Journal Verification Audit Report Modal
+ * SHODH SETU AI - Formal Journal Verification Audit Report Modal
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  */
 
@@ -97,7 +97,7 @@ export const ReportModal: React.FC<ReportModalProps> = ({
           <div className="border-b-2 border-slate-900 pb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <div className="text-2xl font-black tracking-tight text-slate-900">
-                ShodhSetu
+                Shodh Setu AI
               </div>
               <p className="text-xs font-bold text-blue-700 uppercase tracking-widest mt-0.5">
                 Academic Research Bridge &amp; Journal Integrity Intelligence
@@ -280,7 +280,7 @@ export const ReportModal: React.FC<ReportModalProps> = ({
                 {result.limitations}
               </p>
               <p className="pt-1 italic">
-                ShodhSetu is an academic research-support and screening tool. Its scores and classifications are analytical indicators and are not official determinations by Scopus, Clarivate, DOAJ, Crossref, OpenAlex, COPE, ISSN International Centre, or any publisher. Researchers should independently verify journal information through authoritative sources immediately before submission or payment.
+                Shodh Setu AI is an academic research-support and screening tool. Its scores and classifications are analytical indicators and are not official determinations by Scopus, Clarivate, DOAJ, Crossref, OpenAlex, COPE, ISSN International Centre, or any publisher. Researchers should independently verify journal information through authoritative sources immediately before submission or payment.
               </p>
             </div>
           </div>

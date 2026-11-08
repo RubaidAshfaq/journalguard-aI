@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Researcher Profile CfP Notifications Dropdown
+ * Shodh Setu AI - Researcher Profile CfP Notifications Dropdown
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Delivers alerts for newly discovered, verified Call for Papers

@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Scopus API Client
+ * SHODH SETU AI - Scopus API Client
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Secure backend-mediated integration.

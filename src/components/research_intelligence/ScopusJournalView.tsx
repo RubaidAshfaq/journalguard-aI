@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Dedicated Scopus Database View
+ * Shodh Setu AI - Dedicated Scopus Database View
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Displays authoritative Elsevier Scopus indexed journals:

@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Research Ecosystem Dashboard
+ * Shodh Setu AI - Research Ecosystem Dashboard
  * Academic Concept & Direction: Dr. Rubaid Ashfaq · Co-creator: Zeba Nabi
  * 
  * Displays real-time or filtered research ecosystem statistics calculated from

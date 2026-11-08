@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Authenticity Scoring Engine
+ * SHODH SETU AI - Authenticity Scoring Engine
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Strict Weighted Formula:

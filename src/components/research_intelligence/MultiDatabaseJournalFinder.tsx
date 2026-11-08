@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Multi-Database Journal Finder ("Find the Right Journal")
+ * Shodh Setu AI - Multi-Database Journal Finder ("Find the Right Journal")
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Allows multi-database search across:

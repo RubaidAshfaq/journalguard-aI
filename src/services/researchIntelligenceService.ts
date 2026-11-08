@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Research Intelligence Service Engine
+ * Shodh Setu AI - Research Intelligence Service Engine
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Modular implementation for:

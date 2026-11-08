@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Research Intelligence & Verified Journal Discovery Module
+ * Shodh Setu AI - Research Intelligence & Verified Journal Discovery Module
  * Academic Concept & Direction: Dr. Rubaid Ashfaq · Co-creator: Zeba Nabi
  * 
  * Master container uniting all 10 sub-modules:

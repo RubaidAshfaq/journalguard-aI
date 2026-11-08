@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Researcher-Specific Fit Engine
+ * SHODH SETU AI - Researcher-Specific Fit Engine
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Compares journal scope, title, and subjects against researcher profile:

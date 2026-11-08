@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Smart Pre-Submission Checklist
+ * SHODH SETU AI - Smart Pre-Submission Checklist
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  */
 

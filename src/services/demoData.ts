@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Synthetic Demo Data & Known Archetypes
+ * SHODH SETU AI - Synthetic Demo Data & Known Archetypes
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * All synthetic records are explicitly labeled: DEMO / SYNTHETIC DATA
@@ -634,7 +634,7 @@ export function getDemoVerificationResult(type: 'verified' | 'suspicious' | 'clo
           'Consult with your institutional research librarian for accredited target journals.',
         ],
       },
-      limitations: 'Warning score compiled via ShodhSetu Analytical Risk Engine heuristics.',
+      limitations: 'Warning score compiled via Shodh Setu AI Analytical Risk Engine heuristics.',
     };
   }
 

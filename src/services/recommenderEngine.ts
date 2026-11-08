@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Journal Recommender Engine
+ * Shodh Setu AI - Journal Recommender Engine
  * Concept & Academic Direction: Dr. Rubaid Ashfaq
  * 
  * Accurately searches and suggests verified academic journals matching

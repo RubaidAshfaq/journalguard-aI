@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Web of Science Client
+ * SHODH SETU AI - Web of Science Client
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Never scrapes restricted Clarivate pages.

@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Find Journals For My Research
+ * Shodh Setu AI - Find Journals For My Research
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Accurately searches and suggests verified academic venues matching
@@ -456,7 +456,7 @@ export const JournalFinderView: React.FC<JournalFinderViewProps> = ({
                     className="w-full px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                   >
                     <ShieldCheck className="w-3.5 h-3.5" />
-                    <span>Audit in ShodhSetu</span>
+                    <span>Audit in Shodh Setu AI</span>
                   </button>
 
                   <a

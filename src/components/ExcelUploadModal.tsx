@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Excel & Spreadsheet Batch Upload Modal for Discontinued Journals
+ * Shodh Setu AI - Excel & Spreadsheet Batch Upload Modal for Discontinued Journals
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Allows academic contributors and research integrity analysts to upload Excel (.xlsx, .xls)
@@ -309,7 +309,7 @@ export const ExcelUploadModal: React.FC<ExcelUploadModalProps> = ({
     const ws = XLSX.utils.json_to_sheet(templateData);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Discontinued_Journals');
-    XLSX.writeFile(wb, 'ShodhSetu_Discontinued_Journals_Template.xlsx');
+    XLSX.writeFile(wb, 'Shodh Setu AI_Discontinued_Journals_Template.xlsx');
   };
 
   const validSelectedCount = parsedRows.filter(r => r.selected && r.isValid).length;
@@ -330,7 +330,7 @@ export const ExcelUploadModal: React.FC<ExcelUploadModalProps> = ({
                 Upload Excel / CSV Discontinued Journals List
               </h3>
               <p className="text-xs text-rose-200">
-                Batch contribute multiple discontinued or delisted serials into the ShodhSetu repository
+                Batch contribute multiple discontinued or delisted serials into the Shodh Setu AI repository
               </p>
             </div>
           </div>
@@ -352,7 +352,7 @@ export const ExcelUploadModal: React.FC<ExcelUploadModalProps> = ({
               <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
               <div>
                 <strong className="block text-sm font-bold">Import Successful!</strong>
-                <span>{importSuccessCount} discontinued journals were successfully added to the ShodhSetu repository.</span>
+                <span>{importSuccessCount} discontinued journals were successfully added to the Shodh Setu AI repository.</span>
               </div>
             </div>
           )}

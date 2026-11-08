@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Report Export & Generation Engine
+ * SHODH SETU AI - Report Export & Generation Engine
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  */
 
@@ -29,7 +29,7 @@ export function exportResultToCSV(result: VerificationResult, profile: Researche
     [''],
     ['INTELLIGENCE SCORES'],
     ['Authenticity Score (0-100)', result.authenticityScore.total.toString()],
-    ['ShodhSetu Analytical Risk Score', `${result.riskAnalysis.riskScore} (${result.riskAnalysis.riskTier})`],
+    ['Shodh Setu AI Analytical Risk Score', `${result.riskAnalysis.riskScore} (${result.riskAnalysis.riskTier})`],
     ['Research Fit Score', `${result.researchFit.total}% (${result.researchFit.tier})`],
     ['Cloning / Hijacking Risk', result.cloneGuard.isPossibleClone ? 'YES - ELEVATED/CRITICAL' : 'NO - RECORD CONSISTENT'],
     [''],
@@ -57,7 +57,7 @@ export function exportResultToCSV(result: VerificationResult, profile: Researche
   const encodedUri = encodeURI(csvContent);
   const link = document.createElement('a');
   link.setAttribute('href', encodedUri);
-  link.setAttribute('download', `ShodhSetu_Report_${result.journal.issn || 'Record'}.csv`);
+  link.setAttribute('download', `Shodh Setu AI_Report_${result.journal.issn || 'Record'}.csv`);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -66,10 +66,10 @@ export function exportResultToCSV(result: VerificationResult, profile: Researche
 export function exportResultToJSON(result: VerificationResult, profile: ResearcherProfile): void {
   const exportPayload = {
     metadata: {
-      generator: 'ShodhSetu',
+      generator: 'Shodh Setu AI',
       createdBy: 'Dr. Rubaid Ashfaq',
       exportedAt: new Date().toISOString(),
-      disclaimer: 'ShodhSetu is an academic screening tool. Indicators do not represent official determinations by indexing bodies.',
+      disclaimer: 'Shodh Setu AI is an academic screening tool. Indicators do not represent official determinations by indexing bodies.',
     },
     researcher: profile,
     verification: result,
@@ -78,7 +78,7 @@ export function exportResultToJSON(result: VerificationResult, profile: Research
   const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(exportPayload, null, 2));
   const link = document.createElement('a');
   link.setAttribute('href', dataStr);
-  link.setAttribute('download', `ShodhSetu_Report_${result.journal.issn || 'Record'}.json`);
+  link.setAttribute('download', `Shodh Setu AI_Report_${result.journal.issn || 'Record'}.json`);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);

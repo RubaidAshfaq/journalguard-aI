@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Journal Profile Dossier Modal
+ * Shodh Setu AI - Journal Profile Dossier Modal
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Detailed dossier for verified journals featuring:

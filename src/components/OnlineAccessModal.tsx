@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Online Web App & Share Portal Modal
+ * SHODH SETU AI - Online Web App & Share Portal Modal
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Explains and facilitates 100% online browser access with zero installation.
@@ -44,7 +44,7 @@ export const OnlineAccessModal: React.FC<OnlineAccessModalProps> = ({
     ? window.location.origin
     : PUBLIC_APP_URL;
 
-  const shareText = `Verify journals before submitting your research. ShodhSetu is a free online academic tool to detect predatory publishers, cloned domains, and verify Scopus/DOAJ indexing — no install required: ${currentUrl}`;
+  const shareText = `Verify journals before submitting your research. Shodh Setu AI is a free online academic tool to detect predatory publishers, cloned domains, and verify Scopus/DOAJ indexing — no install required: ${currentUrl}`;
 
   const handleCopyLink = async () => {
     try {
@@ -57,8 +57,8 @@ export const OnlineAccessModal: React.FC<OnlineAccessModalProps> = ({
     }
   };
 
-  const emailSubject = encodeURIComponent('ShodhSetu - Free Online Journal Verification Tool (No Install Required)');
-  const emailBody = encodeURIComponent(`Dear Colleague,\n\nI recommend using ShodhSetu to verify academic journals before submission:\n\n${currentUrl}\n\n- 100% online in your browser\n- Zero installation or account required\n\nAcademic Concept & Direction: Dr. Rubaid Ashfaq · Co-creator: Zeba Nabi`);
+  const emailSubject = encodeURIComponent('Shodh Setu AI - Free Online Journal Verification Tool (No Install Required)');
+  const emailBody = encodeURIComponent(`Dear Colleague,\n\nI recommend using Shodh Setu AI to verify academic journals before submission:\n\n${currentUrl}\n\n- 100% online in your browser\n- Zero installation or account required\n\nAcademic Concept & Direction: Dr. Rubaid Ashfaq · Co-creator: Zeba Nabi`);
   const mailShareUrl = `mailto:?subject=${emailSubject}&body=${emailBody}`;
   const whatsAppShareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
 
@@ -107,7 +107,7 @@ export const OnlineAccessModal: React.FC<OnlineAccessModalProps> = ({
               </span>
             </div>
             <h3 className="text-base sm:text-lg font-bold text-slate-900 leading-snug">
-              Anyone with this link can use ShodhSetu immediately
+              Anyone with this link can use Shodh Setu AI immediately
             </h3>
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
               No need to log in with a Gmail or Google account, register credentials, or download mobile apps. Simply open the URL link in Chrome, Safari, Firefox, or Edge on any computer, phone, or tablet to verify journals immediately.
@@ -270,7 +270,7 @@ export const OnlineAccessModal: React.FC<OnlineAccessModalProps> = ({
                   </div>
                 </div>
                 <p className="text-xs text-slate-600 max-w-xs">
-                  Scan with your phone camera to open ShodhSetu immediately in your mobile browser.
+                  Scan with your phone camera to open Shodh Setu AI immediately in your mobile browser.
                 </p>
               </div>
             )}

@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - PublicationVolumeMonitor (Re-exporting JournalBehaviourMonitor)
+ * Shodh Setu AI - PublicationVolumeMonitor (Re-exporting JournalBehaviourMonitor)
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  */
 

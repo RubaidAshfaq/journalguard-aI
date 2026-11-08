@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Email Alert Service
+ * SHODH SETU AI - Email Alert Service
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Centralized service providing pre-defined forensic templates and dispatch handlers
@@ -108,7 +108,7 @@ URGENT ACADEMIC INTEGRITY ALERT: An unauthorized, counterfeit cloned journal web
 3. Alert Clarivate (WoS), Scopus, DOAJ, Crossref, and COPE
 
 * Forensic Audit Reference: ${params.auditId}
-* Generated via ShodhSetu (Academic Concept & Direction: Dr. Rubaid Ashfaq)
+* Generated via Shodh Setu AI (Academic Concept & Direction: Dr. Rubaid Ashfaq)
 [Notice: Full technical evidence report has also been copied to clipboard for your legal team.]`;
 }
 
@@ -171,7 +171,7 @@ cc: Scholarly Integrity, Legal Affairs & Ethics Office,
 
 I am writing to formally alert your editorial office that an unauthorized, counterfeit, and predatory cloned journal website appears to be actively misappropriating the academic identity, serial title, and ISSN of your legitimate publication.
 
-This forensic alert has been generated via ShodhSetu to equip your legal and editorial team with verified technical evidence to initiate domain takedowns and protect scholars from deceptive publication solicitation.
+This forensic alert has been generated via Shodh Setu AI to equip your legal and editorial team with verified technical evidence to initiate domain takedowns and protect scholars from deceptive publication solicitation.
 
 ========================================================================
 1. AUTHENTIC JOURNAL IDENTITY (Authoritative Registry Record)

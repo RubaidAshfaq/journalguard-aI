@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Journal Clone & Hijacking Detector
+ * SHODH SETU AI - Journal Clone & Hijacking Detector
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Compares submitted website and claimed ISSN against canonical database entries in real time.

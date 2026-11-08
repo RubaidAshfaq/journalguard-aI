@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Complete Journal Verification Result Screen
+ * SHODH SETU AI - Complete Journal Verification Result Screen
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Features explicit Real-Time Canonical Cross-Check for ISSN Mismatches & Domain Inconsistencies.
@@ -309,7 +309,7 @@ export const VerificationResultView: React.FC<VerificationResultViewProps> = ({
             <div>
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                  ShodhSetu Risk Score
+                  Shodh Setu AI Risk Score
                 </span>
                 <span className={`w-2.5 h-2.5 rounded-full ${riskStyle.dot}`} />
               </div>
@@ -904,7 +904,7 @@ export const VerificationResultView: React.FC<VerificationResultViewProps> = ({
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
           <div>
             <h3 className="text-base font-bold text-slate-900">
-              Predatory Risk Analysis (ShodhSetu Analytical Engine)
+              Predatory Risk Analysis (Shodh Setu AI Analytical Engine)
             </h3>
             <p className="text-xs text-slate-500">
               Evidence-based screening of 14 predatory and deceptive publishing indicators.

@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Directory of Open Access Journals (DOAJ) Connector
+ * SHODH SETU AI - Directory of Open Access Journals (DOAJ) Connector
  * Verifies open-access legitimacy, peer-review transparency, license, and APC terms.
  */
 

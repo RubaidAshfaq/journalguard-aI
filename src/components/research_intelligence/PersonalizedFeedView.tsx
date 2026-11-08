@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Personalized Research Feed & Follow Alerts
+ * Shodh Setu AI - Personalized Research Feed & Follow Alerts
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Curated research feed matching:

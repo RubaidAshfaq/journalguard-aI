@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - OpenAlex Scholarly Source Connector
+ * SHODH SETU AI - OpenAlex Scholarly Source Connector
  * Clearly labeled as: OpenAlex metadata.
  * Do not call OpenAlex equivalent to Scopus.
  */
@@ -33,7 +33,7 @@ export async function queryOpenAlex(query: string, issn?: string): Promise<{
     }
 
     const res = await fetch(url, {
-      headers: { 'User-Agent': 'ShodhSetu/1.0 (mailto:academic-research@shodhsetu.org)' },
+      headers: { 'User-Agent': 'Shodh Setu AI/1.0 (mailto:academic-research@shodhsetu.org)' },
     });
 
     if (res.ok) {

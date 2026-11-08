@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Local Storage & Privacy Management
+ * SHODH SETU AI - Local Storage & Privacy Management
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Stores researcher profile, watchlist, and verification history locally.

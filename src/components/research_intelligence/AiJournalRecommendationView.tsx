@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - AI Journal Recommendation & Keyword Matching Engine
+ * Shodh Setu AI - AI Journal Recommendation & Keyword Matching Engine
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Analyzes:

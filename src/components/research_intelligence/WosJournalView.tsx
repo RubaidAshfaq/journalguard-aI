@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Dedicated Web of Science Core Collection View
+ * Shodh Setu AI - Dedicated Web of Science Core Collection View
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Authoritative Clarivate Web of Science index explorer:

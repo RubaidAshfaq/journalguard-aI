@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Journal Authenticity & Predatory / Cloned Check View
+ * Shodh Setu AI - Journal Authenticity & Predatory / Cloned Check View
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Forensic inspection for:

@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Cloned & Predatory Journals Rolling Sidebar
+ * Shodh Setu AI - Cloned & Predatory Journals Rolling Sidebar
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Runs a continuous vertical live roll of known hijacked, cloned, and predatory journals

@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Main Verification Coordinator Engine
+ * SHODH SETU AI - Main Verification Coordinator Engine
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Orchestrates:

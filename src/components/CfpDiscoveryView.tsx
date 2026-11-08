@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Call for Papers (CfP) Discovery & Verification Engine
+ * Shodh Setu AI - Call for Papers (CfP) Discovery & Verification Engine
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Accurately discovers, verifies, and matches real Call for Papers from official
@@ -532,7 +532,7 @@ export const CfpDiscoveryView: React.FC<CfpDiscoveryViewProps> = ({
                     )}
                   </div>
 
-                  {/* Audit in ShodhSetu */}
+                  {/* Audit in Shodh Setu AI */}
                   <button
                     type="button"
                     onClick={() => onVerifyJournal(cfp.issn || cfp.journalName)}

@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - JournalBehaviourMonitor Component
+ * Shodh Setu AI - JournalBehaviourMonitor Component
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Standalone analytical component that integrates within VerificationResultView.
@@ -1001,7 +1001,7 @@ export const JournalBehaviourMonitor: React.FC<JournalBehaviourMonitorProps> = (
           </p>
           <div className="flex items-center gap-2 pt-1 font-mono text-[11px] text-rose-800 dark:text-rose-300">
             <span>Delisted From: <strong>{delistedNotice.delistedFrom?.join(', ')}</strong></span>
-            <span>· Verified in ShodhSetu Delisted Registry</span>
+            <span>· Verified in Shodh Setu AI Delisted Registry</span>
           </div>
         </div>
       )}

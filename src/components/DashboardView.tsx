@@ -583,7 +583,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               </span>
             </div>
             <p className="text-xs text-slate-600 max-w-2xl leading-relaxed">
-              Anyone with your shareable URL link can use ShodhSetu directly in their browser without signing in with a Gmail or Google account, installing software, or creating passwords.
+              Anyone with your shareable URL link can use Shodh Setu AI directly in their browser without signing in with a Gmail or Google account, installing software, or creating passwords.
             </p>
           </div>
         </div>

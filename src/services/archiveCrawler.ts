@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Journal Archive Crawler & Article Counting Engine
+ * Shodh Setu AI - Journal Archive Crawler & Article Counting Engine
  * Concept & Academic Direction: Dr. Rubaid Ashfaq
  * 
  * Accurately crawls journal archive pages, follows pagination to the end,
@@ -791,7 +791,7 @@ export async function crawlJournalArchive(archiveUrl: string): Promise<Publicati
       visitedArchivePages.add(currentUrl);
       const fetchResponse: globalThis.Response = await fetch(currentUrl, {
         headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) ShodhSetu Academic Crawler/1.0',
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Shodh Setu AI Academic Crawler/1.0',
         },
       });
 
@@ -830,7 +830,7 @@ export async function crawlJournalArchive(archiveUrl: string): Promise<Publicati
         batch.map(async (iss) => {
           try {
             const res: globalThis.Response = await fetch(iss.url, {
-              headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) ShodhSetu/1.0' },
+              headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Shodh Setu AI/1.0' },
             });
             if (!res.ok) {
               return null;

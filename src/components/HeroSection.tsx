@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Material 3 Hero & Instant Search Component
+ * SHODH SETU AI - Material 3 Hero & Instant Search Component
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Supports both Single Quick Query & Advanced Real-Time Domain/ISSN Inconsistency Cross-Check

@@ -1,5 +1,5 @@
 /**
- * ShodhSetu
+ * Shodh Setu AI
  * Academic Research Bridge, Journal Authenticity & Research Integrity Intelligence
  * Concept & Academic Direction: Dr. Rubaid Ashfaq
  * Tagline: Verify Before You Submit. Publish With Confidence.

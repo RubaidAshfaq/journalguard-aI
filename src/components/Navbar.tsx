@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Top Navigation Bar (Material 3 & Google Colorful Theme inspired)
+ * Shodh Setu AI - Top Navigation Bar (Material 3 & Google Colorful Theme inspired)
  * Academic Concept & Direction: Dr. Rubaid Ashfaq · Co-creator: Zeba Nabi
  * 
  * Features Google 4-color accent stripe, live counters (visitors & journals examined),
@@ -119,7 +119,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <div className="flex flex-col">
                 <div className="flex items-center gap-1.5">
                   <span className="font-extrabold text-lg tracking-tight bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 bg-clip-text text-transparent whitespace-nowrap">
-                    ShodhSetu
+                    Shodh Setu AI
                   </span>
                   <div className="flex items-center gap-0.5" title="Google-themed colorful integrity indicator">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#4285F4]" />

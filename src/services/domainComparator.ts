@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Authoritative Domain Comparison Engine
+ * SHODH SETU AI - Authoritative Domain Comparison Engine
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Compares a submitted journal URL/domain against expected authoritative metadata

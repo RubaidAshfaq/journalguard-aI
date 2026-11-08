@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - My Research Library & Watchlist
+ * SHODH SETU AI - My Research Library & Watchlist
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  */
 

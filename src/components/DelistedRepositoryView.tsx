@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Delisted Journals Repository View
+ * Shodh Setu AI - Delisted Journals Repository View
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Comprehensive, searchable repository of academic serials delisted, suppressed, or discontinued
@@ -96,7 +96,7 @@ export const DelistedRepositoryView: React.FC<DelistedRepositoryViewProps> = ({
 
   // Handle Share Record
   const handleShareRecord = async (journal: DelistedJournal) => {
-    const text = `⚠️ DELISTED JOURNAL ALERT: "${journal.title}" (ISSN: ${journal.issn}) was delisted from ${journal.delistedFrom.join(', ')} in ${journal.delistedYear}. Reason: ${journal.reason}. Tracked via ShodhSetu (Concept: Dr. Rubaid Ashfaq).`;
+    const text = `⚠️ DELISTED JOURNAL ALERT: "${journal.title}" (ISSN: ${journal.issn}) was delisted from ${journal.delistedFrom.join(', ')} in ${journal.delistedYear}. Reason: ${journal.reason}. Tracked via Shodh Setu AI (Concept: Dr. Rubaid Ashfaq).`;
     try {
       if (navigator.clipboard) {
         await navigator.clipboard.writeText(text);
@@ -128,7 +128,7 @@ export const DelistedRepositoryView: React.FC<DelistedRepositoryViewProps> = ({
     const encoded = encodeURI(csvContent);
     const link = document.createElement('a');
     link.href = encoded;
-    link.download = `ShodhSetu_Delisted_Journals_Repository_${new Date().toISOString().split('T')[0]}.csv`;
+    link.download = `Shodh Setu AI_Delisted_Journals_Repository_${new Date().toISOString().split('T')[0]}.csv`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -422,7 +422,7 @@ export const DelistedRepositoryView: React.FC<DelistedRepositoryViewProps> = ({
                   className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-95 text-white font-bold text-xs inline-flex items-center gap-1.5 transition-all shadow-xs cursor-pointer"
                 >
                   <Search className="w-3.5 h-3.5" />
-                  <span>Verify in ShodhSetu</span>
+                  <span>Verify in Shodh Setu AI</span>
                 </button>
 
                 <button

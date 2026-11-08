@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Intelligence Alerts & Notices Log View
+ * Shodh Setu AI - Intelligence Alerts & Notices Log View
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Displays full stream of research intelligence alerts with priority filters:

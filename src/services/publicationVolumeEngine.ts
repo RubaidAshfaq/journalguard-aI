@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Journal Publication Behaviour / Volume Anomaly Monitor Engine
+ * Shodh Setu AI - Journal Publication Behaviour / Volume Anomaly Monitor Engine
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Analyzes historical publication volume, issues per year, papers per issue,

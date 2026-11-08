@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Hijacked & Cloned Journal Registry
+ * SHODH SETU AI - Hijacked & Cloned Journal Registry
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Curated registry of known hijacked and cloned academic serials documented by

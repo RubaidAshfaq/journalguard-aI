@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Authoritative Call for Papers (CfP) Registry
+ * Shodh Setu AI - Authoritative Call for Papers (CfP) Registry
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * STRICT ACADEMIC INTEGRITY POLICY:

@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Research Intelligence Authoritative Datasets & Aggregations
+ * Shodh Setu AI - Research Intelligence Authoritative Datasets & Aggregations
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Strict integrity:

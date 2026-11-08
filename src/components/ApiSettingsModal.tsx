@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Institutional / API Integration Settings
+ * SHODH SETU AI - Institutional / API Integration Settings
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Secure backend credentials handling for Scopus & Web of Science.

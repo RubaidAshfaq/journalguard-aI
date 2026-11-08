@@ -475,7 +475,7 @@ async function startServer() {
 
   const server = http.createServer(app);
   server.listen(PORT, '0.0.0.0', () => {
-    console.log(`JOURNALGUARD AI server running on http://0.0.0.0:${PORT}`);
+    console.log(`SHODH SETU AI server running on http://0.0.0.0:${PORT}`);
   });
 }
 

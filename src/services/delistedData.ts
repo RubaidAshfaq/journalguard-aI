@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Authoritative Delisted Journals Registry
+ * Shodh Setu AI - Authoritative Delisted Journals Registry
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Curated registry of scholarly serials delisted, suppressed, or discontinued from
@@ -20,7 +20,7 @@ export const INITIAL_DELISTED_JOURNALS: DelistedJournal[] = [
     category: 'volume_relevance',
     status: 'DELISTED',
     lastKnownIndexedVolume: 'Vol. 20, Issue 4 (Feb 2023)',
-    sharedBy: 'Dr. Rubaid Ashfaq (ShodhSetu Director)',
+    sharedBy: 'Dr. Rubaid Ashfaq (Shodh Setu AI Director)',
     dateAdded: '2023-03-24',
     evidenceSource: 'Clarivate Web of Science Monthly De-listing Bulletin, Retraction Watch',
     officialWebsite: 'https://www.mdpi.com/journal/ijerph',
@@ -37,7 +37,7 @@ export const INITIAL_DELISTED_JOURNALS: DelistedJournal[] = [
     category: 'citation_manipulation',
     status: 'DISCONTINUED',
     lastKnownIndexedVolume: 'Vol. 31, Issue 12 (Dec 2022)',
-    sharedBy: 'ShodhSetu Research Integrity Group',
+    sharedBy: 'Shodh Setu AI Research Integrity Group',
     dateAdded: '2022-12-15',
     evidenceSource: 'Scopus Discontinued Sources List & Clarivate JCR Suppression Alert',
     officialWebsite: 'https://www.prt-parlar.de',
@@ -55,7 +55,7 @@ export const INITIAL_DELISTED_JOURNALS: DelistedJournal[] = [
     category: 'peer_review_papermill',
     status: 'DELISTED',
     lastKnownIndexedVolume: 'Articles published up to March 2023',
-    sharedBy: 'Dr. Rubaid Ashfaq (ShodhSetu Director)',
+    sharedBy: 'Dr. Rubaid Ashfaq (Shodh Setu AI Director)',
     dateAdded: '2023-03-30',
     evidenceSource: 'Wiley Public Transparency Report & Clarivate De-selection Bulletin',
     officialWebsite: 'https://www.hindawi.com/journals/cin/',
@@ -73,7 +73,7 @@ export const INITIAL_DELISTED_JOURNALS: DelistedJournal[] = [
     category: 'peer_review_papermill',
     status: 'DELISTED',
     lastKnownIndexedVolume: 'Vol. 2023',
-    sharedBy: 'ShodhSetu Community Contributor',
+    sharedBy: 'Shodh Setu AI Community Contributor',
     dateAdded: '2023-04-10',
     evidenceSource: 'Clarivate Web of Science De-listings / Retraction Watch Database',
     officialWebsite: 'https://www.hindawi.com/journals/jhe/',
@@ -125,7 +125,7 @@ export const INITIAL_DELISTED_JOURNALS: DelistedJournal[] = [
     category: 'publication_malpractice',
     status: 'DISCONTINUED',
     lastKnownIndexedVolume: 'Vol. 36 (2022)',
-    sharedBy: 'ShodhSetu Research Integrity Group',
+    sharedBy: 'Shodh Setu AI Research Integrity Group',
     dateAdded: '2022-11-04',
     evidenceSource: 'Elsevier Scopus Discontinued Titles List (Nov 2022)',
     officialWebsite: 'https://www.gacetasanitaria.org',
@@ -143,7 +143,7 @@ export const INITIAL_DELISTED_JOURNALS: DelistedJournal[] = [
     category: 'peer_review_papermill',
     status: 'DELISTED',
     lastKnownIndexedVolume: 'Early 2023',
-    sharedBy: 'Dr. Rubaid Ashfaq (ShodhSetu Director)',
+    sharedBy: 'Dr. Rubaid Ashfaq (Shodh Setu AI Director)',
     dateAdded: '2023-04-05',
     evidenceSource: 'Clarivate Journal De-selection Master List',
     officialWebsite: 'https://www.hindawi.com/journals/wcmc/',
@@ -178,11 +178,11 @@ export const INITIAL_DELISTED_JOURNALS: DelistedJournal[] = [
     category: 'predatory_clone',
     status: 'DELISTED',
     lastKnownIndexedVolume: 'Fraudulent entries purged from indexes',
-    sharedBy: 'Dr. Rubaid Ashfaq (ShodhSetu Director)',
+    sharedBy: 'Dr. Rubaid Ashfaq (Shodh Setu AI Director)',
     dateAdded: '2024-01-18',
     evidenceSource: 'Retraction Watch Hijacked Journal Checker & ISSN International Center',
     officialWebsite: 'https://cineforum.it (Legitimate) vs revistadecineforum.com (Fake)',
-    notes: 'Case study in serial identity theft documented on ShodhSetu live threat watch.'
+    notes: 'Case study in serial identity theft documented on Shodh Setu AI live threat watch.'
   },
   {
     id: 'delist-11',

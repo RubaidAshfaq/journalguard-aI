@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Admin Control Panel & Connector Health View
+ * Shodh Setu AI - Admin Control Panel & Connector Health View
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Manages:
@@ -80,7 +80,7 @@ export const AdminControlPanelView: React.FC<AdminControlPanelViewProps> = ({
             Registry Synchronization Schedule
           </h3>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-            Controls how frequently ShodhSetu queries upstream APIs for indexing changes and delisting flags.
+            Controls how frequently Shodh Setu AI queries upstream APIs for indexing changes and delisting flags.
           </p>
         </div>
 

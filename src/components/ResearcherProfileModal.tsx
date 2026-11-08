@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Researcher Profile Modal
+ * SHODH SETU AI - Researcher Profile Modal
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  */
 

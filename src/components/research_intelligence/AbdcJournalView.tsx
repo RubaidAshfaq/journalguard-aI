@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Dedicated ABDC Journal Quality List View
+ * Shodh Setu AI - Dedicated ABDC Journal Quality List View
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Authoritative ABDC (Australian Business Deans Council) ratings:

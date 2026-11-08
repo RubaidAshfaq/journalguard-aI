@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Material 3 Academic Footer
+ * SHODH SETU AI - Material 3 Academic Footer
  * Academic Concept & Direction: Dr. Rubaid Ashfaq · Co-creator: Zeba Nabi
  */
 
@@ -28,7 +28,7 @@ export const Footer: React.FC<FooterProps> = ({
                 <ShieldCheck className="w-4 h-4" />
               </div>
               <span className="font-extrabold text-base text-slate-900 tracking-tight">
-                ShodhSetu
+                Shodh Setu AI
               </span>
             </div>
             
@@ -146,10 +146,10 @@ export const Footer: React.FC<FooterProps> = ({
             Academic Research Integrity Disclaimer
           </p>
           <p>
-            ShodhSetu is an academic research-support and screening tool. Its scores and classifications are analytical indicators and are not official determinations by Scopus, Clarivate, DOAJ, Crossref, OpenAlex, COPE, ISSN International Centre, or any publisher. Researchers should independently verify journal information through authoritative sources immediately before submission or payment.
+            Shodh Setu AI is an academic research-support and screening tool. Its scores and classifications are analytical indicators and are not official determinations by Scopus, Clarivate, DOAJ, Crossref, OpenAlex, COPE, ISSN International Centre, or any publisher. Researchers should independently verify journal information through authoritative sources immediately before submission or payment.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-between pt-2 text-slate-400">
-            <span>© {new Date().getFullYear()} ShodhSetu · Verify Before You Submit. Publish With Confidence.</span>
+            <span>© {new Date().getFullYear()} Shodh Setu AI · Verify Before You Submit. Publish With Confidence.</span>
             <span>Created by Dr. Rubaid Ashfaq · Co-creator: Zeba Nabi</span>
           </div>
         </div>

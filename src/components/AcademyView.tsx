@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Research Integrity Academy (Learning Centre)
+ * SHODH SETU AI - Research Integrity Academy (Learning Centre)
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  */
 

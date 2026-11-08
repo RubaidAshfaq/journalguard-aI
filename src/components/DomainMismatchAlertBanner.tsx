@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Real-Time Domain Mismatch UI Alert Banner
+ * SHODH SETU AI - Real-Time Domain Mismatch UI Alert Banner
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Displays an immediate high-visibility warning if the submitted journal URL hostname

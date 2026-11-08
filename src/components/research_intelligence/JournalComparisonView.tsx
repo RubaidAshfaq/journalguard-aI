@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Journal Comparison Tool
+ * Shodh Setu AI - Journal Comparison Tool
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Side-by-side comparison matrix comparing:

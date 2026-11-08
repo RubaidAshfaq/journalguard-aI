@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Journal Comparison Modal (Up to 5 journals)
+ * SHODH SETU AI - Journal Comparison Modal (Up to 5 journals)
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  */
 

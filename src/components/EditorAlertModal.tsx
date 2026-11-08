@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Editor Integrity Alert Modal
+ * SHODH SETU AI - Editor Integrity Alert Modal
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Generates and dispatches a formal forensic warning to authentic journal editors & publishers

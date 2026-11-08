@@ -1,5 +1,5 @@
 /**
- * ShodhSetu - Call for Papers (CfP) Discovery & Matching Service
+ * Shodh Setu AI - Call for Papers (CfP) Discovery & Matching Service
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Implements semantic keyword extraction, multi-field matching,

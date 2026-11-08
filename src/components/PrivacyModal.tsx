@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Privacy & Delete My Data Modal
+ * SHODH SETU AI - Privacy & Delete My Data Modal
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  */
 
@@ -33,7 +33,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({
           </h3>
 
           <p className="text-xs text-slate-600 leading-relaxed">
-            In compliance with academic privacy principles, ShodhSetu stores your profile, journal watchlist, notes, and verification history locally on your device in your browser.
+            In compliance with academic privacy principles, Shodh Setu AI stores your profile, journal watchlist, notes, and verification history locally on your device in your browser.
           </p>
 
           <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs text-left">

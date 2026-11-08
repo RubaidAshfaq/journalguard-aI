@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: journalguard-ai
+    name: shodhsetu-ai
     runtime: node
     plan: free
     buildCommand: npm install && npm run build

@@ -1,5 +1,5 @@
 /**
- * JOURNALGUARD AI - Predatory Risk Analysis Engine
+ * SHODH SETU AI - Predatory Risk Analysis Engine
  * Academic Concept & Direction: Dr. Rubaid Ashfaq
  * 
  * Evaluates 14+ warning indicators.
