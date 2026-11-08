@@ -1435,8 +1435,11 @@ if (!fs.existsSync(distPath)) {
 var app = express();
 var PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3e3;
 app.use(express.json());
+app.get("/api/health", (_req, res) => {
+  res.json({ status: "ok" });
+});
 var scopusConfig = {
-  apiKey: process.env.SCOPUS_API_KEY || "ad020bed53b543cea2c500f009ecd7da",
+  apiKey: process.env.SCOPUS_API_KEY || "",
   apiUrl: process.env.SCOPUS_API_URL || "https://api.elsevier.com/content/serial/title"
 };
 var wosConfig = {

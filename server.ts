@@ -23,9 +23,13 @@ const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
 app.use(express.json());
 
+app.get('/api/health', (_req: Request, res: Response) => {
+  res.json({ status: 'ok' });
+});
+
 // In-memory or environment-based Scopus & Web of Science configuration
 let scopusConfig = {
-  apiKey: process.env.SCOPUS_API_KEY || 'ad020bed53b543cea2c500f009ecd7da',
+  apiKey: process.env.SCOPUS_API_KEY || '',
   apiUrl: process.env.SCOPUS_API_URL || 'https://api.elsevier.com/content/serial/title',
 };
 

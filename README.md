@@ -274,6 +274,24 @@ implementation uses a different framework or deployment workflow.
 
 ------------------------------------------------------------------------
 
+## 🌐 Deploy online with Render
+
+This repository includes a [`render.yaml`](./render.yaml) Blueprint for
+deploying the full-stack app as one public web service.
+
+1. Create a new Blueprint at [render.com](https://render.com) and select this
+   repository.
+2. Keep the generated build command as `npm install && npm run build` and the
+   start command as `npm start`.
+3. Add `GEMINI_API_KEY` and any licensed `SCOPUS_API_KEY` or `WOS_API_KEY`
+   values in Render's environment settings. Never commit these values.
+4. Deploy. Render will use `/api/health` for service health checks.
+
+The app serves the Vite frontend and Express API from the same origin, so no
+additional frontend hosting or API proxy configuration is required.
+
+------------------------------------------------------------------------
+
 ## 📌 Project Status
 
 **Research / Development Prototype**
