@@ -153,7 +153,7 @@ export const EditorAlertModal: React.FC<EditorAlertModalProps> = ({
                 <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/20 text-rose-100">
                   Forensic Email Alert Service
                 </span>
-                <span className="text-xs text-rose-200">Concept &amp; Direction: Dr. Rubaid Ashfaq</span>
+                <span className="text-xs text-rose-200">Concept &amp; Direction: Dr. Rubaid Ashfaq · Co-creator: Zeba Nabi</span>
               </div>
               <h2 id="editor-alert-title" className="text-lg font-extrabold text-white">
                 Alert Authentic Journal Editors of Predatory Clone
@@ -425,7 +425,7 @@ export const EditorAlertModal: React.FC<EditorAlertModalProps> = ({
 
           {/* Academic Attribution Footer */}
           <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-            <span>Academic Concept &amp; Direction: <strong className="text-slate-700">Dr. Rubaid Ashfaq</strong></span>
+            <span>Academic Concept &amp; Direction: <strong className="text-slate-700">Dr. Rubaid Ashfaq</strong> · Co-creator: <strong className="text-slate-700">Zeba Nabi</strong></span>
             <button
               onClick={onClose}
               className="text-slate-600 hover:text-slate-900 font-semibold cursor-pointer"

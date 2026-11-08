@@ -410,7 +410,7 @@ export const JournalProfileModal: React.FC<JournalProfileModalProps> = ({
         {/* Modal Footer */}
         <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 flex items-center justify-between text-xs">
           <span className="text-slate-400 text-[11px]">
-            Academic Integrity Concept: Dr. Rubaid Ashfaq
+            Academic Integrity Concept: Dr. Rubaid Ashfaq · Co-creator: Zeba Nabi
           </span>
           <button
             onClick={onClose}

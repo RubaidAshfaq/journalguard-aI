@@ -94,7 +94,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <div className="flex flex-wrap items-center justify-center gap-2.5 mb-6">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50/80 border border-blue-200/60 text-blue-800 text-xs font-semibold shadow-xs">
             <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-            <span>Created by <strong className="font-bold text-blue-900">Dr. Rubaid Ashfaq</strong></span>
+            <span>Created by <strong className="font-bold text-blue-900">Dr. Rubaid Ashfaq</strong> · Co-creator <strong className="font-bold text-blue-900">Zeba Nabi</strong></span>
           </div>
 
           <button

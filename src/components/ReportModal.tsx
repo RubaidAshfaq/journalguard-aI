@@ -103,7 +103,7 @@ export const ReportModal: React.FC<ReportModalProps> = ({
                 Academic Research Bridge &amp; Journal Integrity Intelligence
               </p>
               <p className="text-[11px] text-slate-500 mt-1 font-medium">
-                Created by <strong>Dr. Rubaid Ashfaq</strong>
+                Created by <strong>Dr. Rubaid Ashfaq</strong> · Co-creator: <strong>Zeba Nabi</strong>
               </p>
             </div>
 

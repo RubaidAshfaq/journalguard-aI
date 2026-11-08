@@ -197,7 +197,7 @@ export const DelistedRepositoryView: React.FC<DelistedRepositoryViewProps> = ({
               Delisted Repository
             </span>
             <span className="px-3 py-1 rounded-full bg-white/10 text-rose-200 text-xs font-semibold backdrop-blur-xs">
-              Academic Concept: Dr. Rubaid Ashfaq
+              Academic Concept: Dr. Rubaid Ashfaq · Co-creator: Zeba Nabi
             </span>
           </div>
 

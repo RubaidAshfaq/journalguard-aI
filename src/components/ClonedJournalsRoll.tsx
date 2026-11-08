@@ -241,7 +241,7 @@ export const ClonedJournalsRoll: React.FC<ClonedJournalsRollProps> = ({
         isEmergencyRedMode ? 'border-red-800 bg-red-900/60 text-rose-200' : 'border-slate-100 bg-slate-50 text-slate-500'
       }`}>
         <p className="text-[10px] text-slate-400 leading-tight">
-          Concept: <strong className="text-slate-700 dark:text-white">Dr. Rubaid Ashfaq</strong> · Retraction Watch Registry
+          Concept: <strong className="text-slate-700 dark:text-white">Dr. Rubaid Ashfaq</strong> · Co-creator: <strong className="text-slate-700 dark:text-white">Zeba Nabi</strong> · Retraction Watch Registry
         </p>
       </div>
     </aside>

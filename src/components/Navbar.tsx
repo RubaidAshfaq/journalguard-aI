@@ -1,6 +1,6 @@
 /**
  * ShodhSetu - Top Navigation Bar (Material 3 & Google Colorful Theme inspired)
- * Academic Concept & Direction: Dr. Rubaid Ashfaq
+ * Academic Concept & Direction: Dr. Rubaid Ashfaq · Co-creator: Zeba Nabi
  * 
  * Features Google 4-color accent stripe, live counters (visitors & journals examined),
  * dark mode toggle on the body element, and the Delisted Repository tab.
@@ -134,7 +134,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
             </button>
             <span className="hidden 2xl:inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 text-[10px] font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">
-              Created by Dr. Rubaid Ashfaq
+              Created by Dr. Rubaid Ashfaq · Co-creator: Zeba Nabi
             </span>
           </div>
 

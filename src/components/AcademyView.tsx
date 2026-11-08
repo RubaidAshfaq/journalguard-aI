@@ -176,7 +176,7 @@ export const AcademyView: React.FC = () => {
           Scholarly Publishing Integrity Guide
         </h1>
         <p className="text-xs sm:text-sm text-slate-500 max-w-2xl">
-          Created by <strong>Dr. Rubaid Ashfaq</strong>. Master the distinction between authentic indexing, deceptive marketing, and cloned websites.
+          Created by <strong>Dr. Rubaid Ashfaq</strong> · Co-creator: <strong>Zeba Nabi</strong>. Master the distinction between authentic indexing, deceptive marketing, and cloned websites.
         </p>
       </div>
 

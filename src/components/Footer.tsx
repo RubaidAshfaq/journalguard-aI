@@ -1,6 +1,6 @@
 /**
  * JOURNALGUARD AI - Material 3 Academic Footer
- * Academic Concept & Direction: Dr. Rubaid Ashfaq
+ * Academic Concept & Direction: Dr. Rubaid Ashfaq · Co-creator: Zeba Nabi
  */
 
 import React from 'react';
@@ -39,7 +39,7 @@ export const Footer: React.FC<FooterProps> = ({
             <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 inline-block text-xs">
               <span className="text-slate-500 block">Academic Concept:</span>
               <strong className="text-slate-900 font-extrabold text-sm">
-                Created by Dr. Rubaid Ashfaq
+                Created by Dr. Rubaid Ashfaq · Co-creator: Zeba Nabi
               </strong>
             </div>
 
@@ -150,7 +150,7 @@ export const Footer: React.FC<FooterProps> = ({
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-between pt-2 text-slate-400">
             <span>© {new Date().getFullYear()} ShodhSetu · Verify Before You Submit. Publish With Confidence.</span>
-            <span>Created by Dr. Rubaid Ashfaq</span>
+            <span>Created by Dr. Rubaid Ashfaq · Co-creator: Zeba Nabi</span>
           </div>
         </div>
 

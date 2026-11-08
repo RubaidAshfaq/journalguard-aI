@@ -58,7 +58,7 @@ export const OnlineAccessModal: React.FC<OnlineAccessModalProps> = ({
   };
 
   const emailSubject = encodeURIComponent('ShodhSetu - Free Online Journal Verification Tool (No Install Required)');
-  const emailBody = encodeURIComponent(`Dear Colleague,\n\nI recommend using ShodhSetu to verify academic journals before submission:\n\n${currentUrl}\n\n- 100% online in your browser\n- Zero installation or account required\n\nAcademic Concept & Direction: Dr. Rubaid Ashfaq`);
+  const emailBody = encodeURIComponent(`Dear Colleague,\n\nI recommend using ShodhSetu to verify academic journals before submission:\n\n${currentUrl}\n\n- 100% online in your browser\n- Zero installation or account required\n\nAcademic Concept & Direction: Dr. Rubaid Ashfaq · Co-creator: Zeba Nabi`);
   const mailShareUrl = `mailto:?subject=${emailSubject}&body=${emailBody}`;
   const whatsAppShareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
 
@@ -278,7 +278,7 @@ export const OnlineAccessModal: React.FC<OnlineAccessModalProps> = ({
 
           {/* Academic Attribution Footer */}
           <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-            <span>Academic Concept &amp; Direction: <strong className="text-slate-700">Dr. Rubaid Ashfaq</strong></span>
+            <span>Academic Concept &amp; Direction: <strong className="text-slate-700">Dr. Rubaid Ashfaq</strong> · Co-creator: <strong className="text-slate-700">Zeba Nabi</strong></span>
             <button
               onClick={onClose}
               className="text-blue-600 hover:text-blue-800 font-semibold cursor-pointer"
