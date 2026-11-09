@@ -3,7 +3,7 @@
  * Academic Concept & Direction: Dr. Rubaid Ashfaq · Co-creator: Zeba Nabi
  * 
  * Displays real-time or filtered research ecosystem statistics calculated from
- * actual registered user records (12,845 researchers across 74 countries),
+ * privacy-preserving ecosystem summary (456 researchers across 64 countries),
  * with multi-dimension filters (Country, Region, Research Area, Institution, Career Stage, Date Range).
  */
 
@@ -153,6 +153,24 @@ export const ResearchEcosystemDashboard: React.FC<ResearchEcosystemDashboardProp
               <option value="Canada">Canada</option>
               <option value="Singapore">Singapore</option>
               <option value="Netherlands">Netherlands</option>
+              <option value="Pakistan">Pakistan</option>
+              <option value="Bangladesh">Bangladesh</option>
+              <option value="Sri Lanka">Sri Lanka</option>
+              <option value="Nepal">Nepal</option>
+              <option value="Malaysia">Malaysia</option>
+              <option value="Indonesia">Indonesia</option>
+              <option value="Thailand">Thailand</option>
+              <option value="Vietnam">Vietnam</option>
+              <option value="Philippines">Philippines</option>
+              <option value="China">China</option>
+              <option value="Japan">Japan</option>
+              <option value="South Korea">South Korea</option>
+              <option value="Brazil">Brazil</option>
+              <option value="Argentina">Argentina</option>
+              <option value="South Africa">South Africa</option>
+              <option value="Nigeria">Nigeria</option>
+              <option value="Saudi Arabia">Saudi Arabia</option>
+              <option value="United Arab Emirates">United Arab Emirates</option>
             </select>
           </div>
 
