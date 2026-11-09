@@ -4,7 +4,7 @@
  * 
  * Displays authoritative Elsevier Scopus indexed journals:
  * - Scopus Source ID & ISSN validation
- * - CiteScore, SNIP, SJR, and Quartile rankings (Q1 to Q4)
+ * - CiteScore, SNIP, SJR, and coverage status when supplied by the source
  * - Coverage status: Active / Continuous vs Discontinued / Under Evaluation
  * - Server-side proxy API verification integration
  */
@@ -37,7 +37,6 @@ export const ScopusJournalView: React.FC<ScopusJournalViewProps> = ({
   onVerifyJournal,
 }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [selectedQuartile, setSelectedQuartile] = useState<string>('all');
   const [selectedSubject, setSelectedSubject] = useState<string>('all');
   const [isApiChecking, setIsApiChecking] = useState<boolean>(false);
   const [apiCheckResult, setApiCheckResult] = useState<string | null>(null);
@@ -100,28 +99,11 @@ export const ScopusJournalView: React.FC<ScopusJournalViewProps> = ({
     });
   }, []);
 
-  // Compute live quartile counts across the catalog
-  const counts = useMemo(() => {
-    const scopusPool = allJournals.filter(j => j.scopusIndexed || Boolean(j.scopusQuartile) || Boolean(j.scopusDetails?.quartile));
-    return {
-      all: scopusPool.length,
-      Q1: scopusPool.filter(j => (j.scopusQuartile || j.scopusDetails?.quartile) === 'Q1').length,
-      Q2: scopusPool.filter(j => (j.scopusQuartile || j.scopusDetails?.quartile) === 'Q2').length,
-      Q3: scopusPool.filter(j => (j.scopusQuartile || j.scopusDetails?.quartile) === 'Q3').length,
-      Q4: scopusPool.filter(j => (j.scopusQuartile || j.scopusDetails?.quartile) === 'Q4').length,
-    };
-  }, [allJournals]);
-
   // Filter for Scopus indexed journals with resilient field fallbacks
   const scopusJournals = useMemo(() => {
     return allJournals.filter(j => {
       const isIndexed = j.scopusIndexed || Boolean(j.scopusQuartile) || Boolean(j.scopusDetails?.quartile);
       if (!isIndexed) return false;
-
-      const q = j.scopusQuartile || j.scopusDetails?.quartile;
-      if (selectedQuartile !== 'all' && q !== selectedQuartile) {
-        return false;
-      }
 
       if (selectedSubject !== 'all') {
         const subMatch = (j.discipline || '').toLowerCase().includes(selectedSubject.toLowerCase()) ||
@@ -136,12 +118,11 @@ export const ScopusJournalView: React.FC<ScopusJournalViewProps> = ({
 
       return true;
     });
-  }, [allJournals, selectedQuartile, selectedSubject, searchQuery]);
+  }, [allJournals, selectedSubject, searchQuery]);
   const visibleJournals = scopusJournals.slice(0, 100);
 
   const handleResetFilters = () => {
     setSearchQuery('');
-    setSelectedQuartile('all');
     setSelectedSubject('all');
   };
 
@@ -176,7 +157,7 @@ export const ScopusJournalView: React.FC<ScopusJournalViewProps> = ({
             Scopus Indexed Journals Directory
           </h2>
           <p className="text-xs sm:text-sm text-orange-100/90 mt-1 leading-relaxed">
-            Verify official Scopus coverage, CiteScore 2024/2026 calculations, SJR, SNIP, and subject area quartile percentiles directly from authenticated scholarly records.
+            Verify official Scopus coverage, source identifiers, publisher metadata, and subject areas directly from authenticated scholarly records.
           </p>
         </div>
       </div>
@@ -199,37 +180,9 @@ export const ScopusJournalView: React.FC<ScopusJournalViewProps> = ({
         </button>
       </div>
 
-      {/* Quick Quartile Selector & Search Ribbon */}
+      {/* Scopus Search and Subject Filters */}
       <div className="p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs space-y-3">
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
-          <div className="text-xs font-semibold text-slate-700 dark:text-slate-200">
-            Filter by Elsevier Quartile Ranking:
-            <span className="ml-2 font-normal text-slate-400">Workbook-supplied quartiles are shown when available; imported source-list rows remain unranked.</span>
-          </div>
-          <div className="flex flex-wrap items-center gap-1.5">
-            {[
-              { id: 'all', label: 'All Scopus', count: counts.all },
-              { id: 'Q1', label: 'Q1 (Top 25%)', count: counts.Q1 },
-              { id: 'Q2', label: 'Q2 (25-50%)', count: counts.Q2 },
-              { id: 'Q3', label: 'Q3 (50-75%)', count: counts.Q3 },
-              { id: 'Q4', label: 'Q4 (Lowest 25%)', count: counts.Q4 },
-            ].map(pill => (
-              <button
-                key={pill.id}
-                onClick={() => setSelectedQuartile(pill.id)}
-                className={`px-2.5 py-1 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
-                  selectedQuartile === pill.id
-                    ? 'bg-orange-600 text-white shadow-2xs'
-                    : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
-                }`}
-              >
-                {pill.label} ({pill.count})
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="sm:col-span-1">
             <label className="block text-[11px] font-medium text-slate-500 dark:text-slate-400 mb-1">Search Scopus Titles &amp; ISSNs</label>
             <div className="relative">
@@ -242,21 +195,6 @@ export const ScopusJournalView: React.FC<ScopusJournalViewProps> = ({
                 className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white"
               />
             </div>
-          </div>
-
-          <div>
-            <label className="block text-[11px] font-medium text-slate-500 dark:text-slate-400 mb-1">Quartile Tier</label>
-            <select
-              value={selectedQuartile}
-              onChange={(e) => setSelectedQuartile(e.target.value)}
-              className="w-full text-xs rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 py-1.5 px-2"
-            >
-              <option value="all">All Quartiles (Q1 to Q4)</option>
-              <option value="Q1">Q1 (Top 25% Percentile)</option>
-              <option value="Q2">Q2 (25% - 50%)</option>
-              <option value="Q3">Q3 (50% - 75%)</option>
-              <option value="Q4">Q4 (Lowest 25%)</option>
-            </select>
           </div>
 
           <div>
@@ -286,7 +224,7 @@ export const ScopusJournalView: React.FC<ScopusJournalViewProps> = ({
           )}
           <span className="ml-2 text-slate-400">· Includes the September 2026 source-list export</span>
         </span>
-        {(searchQuery || selectedQuartile !== 'all' || selectedSubject !== 'all') && (
+        {(searchQuery || selectedSubject !== 'all') && (
           <button
             onClick={handleResetFilters}
             className="text-orange-600 dark:text-orange-400 hover:underline font-medium cursor-pointer"
@@ -305,7 +243,7 @@ export const ScopusJournalView: React.FC<ScopusJournalViewProps> = ({
             No Scopus Journals Match Your Current Filters
           </h3>
           <p className="text-xs text-slate-500 dark:text-slate-400 max-w-md mx-auto">
-            We verified all authentic Scopus titles in the registry, but none matched your active search query and quartile/subject criteria.
+            We verified all authentic Scopus titles in the registry, but none matched your active search query or subject criteria.
           </p>
           <button
             onClick={handleResetFilters}
@@ -325,7 +263,7 @@ export const ScopusJournalView: React.FC<ScopusJournalViewProps> = ({
               <div>
                 <div className="flex items-center justify-between gap-2 mb-2">
                   <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-orange-100 dark:bg-orange-950/80 text-orange-800 dark:text-orange-300 border border-orange-200 dark:border-orange-800">
-                    Scopus {j.scopusQuartile || j.scopusDetails?.quartile || 'Indexed'}
+                    Scopus Indexed
                   </span>
                   <span className={`text-[11px] font-medium flex items-center gap-1 ${
                     j.scopusDetails?.status === 'ACTIVE'
