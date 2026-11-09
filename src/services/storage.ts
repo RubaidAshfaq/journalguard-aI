@@ -357,14 +357,14 @@ export function getStoredDelistedJournals(): DelistedJournal[] {
     if (raw) {
       const parsed = JSON.parse(raw);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        const existingIssns = new Set(parsed.map(j => (j.issn || '').toLowerCase().trim()).filter(Boolean));
-        const existingTitles = new Set(parsed.map(j => (j.title || '').toLowerCase().trim()).filter(Boolean));
-        const missingImported = DISCONTINUED_SCOPUS_SEPTEMBER_2026.filter(journal =>
-          !existingIssns.has(journal.issn.toLowerCase().trim()) &&
-          !existingTitles.has(journal.title.toLowerCase().trim()),
+        const importedIssns = new Set(DISCONTINUED_SCOPUS_SEPTEMBER_2026.map(journal => journal.issn.toLowerCase().trim()));
+        const importedTitles = new Set(DISCONTINUED_SCOPUS_SEPTEMBER_2026.map(journal => journal.title.toLowerCase().trim()));
+        const existingWithoutImported = parsed.filter(journal =>
+          !importedIssns.has((journal.issn || '').toLowerCase().trim()) &&
+          !importedTitles.has((journal.title || '').toLowerCase().trim()),
         );
-        if (missingImported.length > 0) {
-          const merged = [...missingImported, ...parsed];
+        if (existingWithoutImported.length !== parsed.length) {
+          const merged = [...DISCONTINUED_SCOPUS_SEPTEMBER_2026, ...existingWithoutImported];
           localStorage.setItem(DELISTED_KEY, JSON.stringify(merged));
           return merged;
         }
