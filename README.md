@@ -432,17 +432,13 @@ Proposed verification criteria should be supported by reliable evidence and clea
 
 ## Dr. Rubaid Ashfaq
 
-**Associate Professor / Program Leader**  
-Amity School of Communication  
-Amity University Uttar Pradesh, Noida, India
-
+**Creator & Associate Professor**  
 Research and professional interests include:
-
 **Artificial Intelligence • Media • Digital Research • Research Integrity • Digital Publishing • Generative AI**
 
 ## Zeba Nabi
 
-**Co-Creator & Research/Academic Collaborator**
+**Co-Creator & Research/Academic Collaborator (OUP)**
 
 Shodh Setu AI represents a collaborative effort to explore how emerging technologies can support researchers in navigating the increasingly complicated academic publishing ecosystem.
 
