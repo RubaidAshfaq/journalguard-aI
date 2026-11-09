@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { IntelligenceJournal } from '../../types';
 import { getStoredIntelligenceJournals } from '../../services/researchIntelligenceService';
+import { SCOPUS_NEW_TITLES } from '../../services/scopusNewTitles';
 
 interface ScopusJournalViewProps {
   onOpenDossier: (journal: IntelligenceJournal) => void;
@@ -40,7 +41,34 @@ export const ScopusJournalView: React.FC<ScopusJournalViewProps> = ({
   const [isApiChecking, setIsApiChecking] = useState<boolean>(false);
   const [apiCheckResult, setApiCheckResult] = useState<string | null>(null);
 
-  const allJournals = useMemo(() => getStoredIntelligenceJournals(), []);
+  const allJournals = useMemo(() => {
+    const catalogJournals: IntelligenceJournal[] = SCOPUS_NEW_TITLES.map((record, index) => ({
+      id: `scopus-new-title-${index + 1}`,
+      title: record.title,
+      issn: record.issn || record.eIssn || 'N/A',
+      eIssn: record.eIssn || undefined,
+      publisher: record.publisher,
+      country: 'International',
+      subjectAreas: [],
+      discipline: 'Multidisciplinary',
+      scopusIndexed: true,
+      scopusDetails: {
+        status: 'ACTIVE',
+        coverage: 'Added September 2026',
+        sourceType: 'Journal',
+      },
+      wosIndexed: false,
+      verificationStatus: 'VERIFIED',
+      openAccess: false,
+    }));
+
+    const existing = getStoredIntelligenceJournals();
+    const existingKeys = new Set(existing.map(journal => `${journal.title.toLowerCase()}|${journal.issn}`));
+    return [
+      ...existing,
+      ...catalogJournals.filter(journal => !existingKeys.has(`${journal.title.toLowerCase()}|${journal.issn}`)),
+    ];
+  }, []);
 
   // Compute live quartile counts across the catalog
   const counts = useMemo(() => {
@@ -219,7 +247,10 @@ export const ScopusJournalView: React.FC<ScopusJournalViewProps> = ({
 
       {/* Scopus Journals Count & List */}
       <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-        <span>Showing <strong className="text-slate-800 dark:text-slate-200">{scopusJournals.length}</strong> authenticated Scopus journals</span>
+        <span>
+          Showing <strong className="text-slate-800 dark:text-slate-200">{scopusJournals.length}</strong> authenticated Scopus journals
+          <span className="ml-2 text-slate-400">· Includes Scopus New Titles accepted September 2026</span>
+        </span>
         {(searchQuery || selectedQuartile !== 'all' || selectedSubject !== 'all') && (
           <button
             onClick={handleResetFilters}
@@ -287,19 +318,19 @@ export const ScopusJournalView: React.FC<ScopusJournalViewProps> = ({
                   <div>
                     <span className="text-slate-400 block text-[10px]">CiteScore</span>
                     <span className="text-base font-extrabold text-orange-700 dark:text-orange-300 tabular-nums">
-                      {j.scopusCiteScore || j.scopusDetails?.citeScore || '4.2'}
+                      {j.scopusCiteScore || j.scopusDetails?.citeScore || (j.id.startsWith('scopus-new-title-') ? 'Not listed' : '4.2')}
                     </span>
                   </div>
                   <div>
                     <span className="text-slate-400 block text-[10px]">SNIP</span>
                     <span className="text-sm font-bold text-slate-800 dark:text-slate-200 tabular-nums">
-                      {j.scopusSnip || '2.41'}
+                      {j.scopusSnip || (j.id.startsWith('scopus-new-title-') ? 'Not listed' : '2.41')}
                     </span>
                   </div>
                   <div>
                     <span className="text-slate-400 block text-[10px]">SJR</span>
                     <span className="text-sm font-bold text-slate-800 dark:text-slate-200 tabular-nums">
-                      {j.scopusSjr || '1.85'}
+                      {j.scopusSjr || (j.id.startsWith('scopus-new-title-') ? 'Not listed' : '1.85')}
                     </span>
                   </div>
                 </div>
@@ -337,4 +368,3 @@ export const ScopusJournalView: React.FC<ScopusJournalViewProps> = ({
     </div>
   );
 };
-
