@@ -1,233 +1,323 @@
-[README(1).md](https://github.com/user-attachments/files/34354904/README.1.md)
-# SHODH SETU AI
+# 🌉 SHODH SETU AI
 
-### Research Integrity Intelligence
+## Research Integrity Intelligence
 
-**Shodh Setu AI** is a modern research-support platform designed to help
-researchers, faculty members, PhD scholars, postgraduate students, and
-academic institutions verify journals before submitting research.
+### **Verify. Connect. Publish with Confidence.**
+
+**Shodh Setu AI** is an AI-assisted research-support and journal-verification platform designed to help **researchers, faculty members, PhD scholars, postgraduate students, research supervisors, academic institutions, editors, and research offices** conduct preliminary due diligence before submitting a manuscript to an academic journal.
+
+The platform brings multiple research-verification signals into a single, researcher-friendly workflow, including **journal identity, ISSN information, publisher details, indexing-related signals, domain intelligence, cloned-journal detection, and predatory-risk indicators**.
 
 > **Before You Submit. Verify Your Journal.**
 
-The platform brings journal verification, indexing checks, publisher
-information, domain intelligence, cloning-risk detection, and
-predatory-risk indicators into one streamlined workflow.
+---
 
-------------------------------------------------------------------------
+## 👨‍💻 Created & Co-Created By
 
-## 🖥️ Application Preview
+### **Dr. Rubaid Ashfaq** & **Zeba Nabi**
 
-![Shodh Setu AI Dashboard](assets/shodhsetu-ai-dashboard.png)
 
-### Journal Verification Dashboard
+**Shodh Setu AI is created by Dr. Rubaid Ashfaq and co-created by Zeba Nabi as a research-oriented technology initiative focused on improving journal-selection awareness, research integrity, and informed academic publishing decisions.**
 
-The Shodh Setu AI interface provides a quick way to investigate a
-journal or journal website before manuscript submission.
+The project brings together perspectives from **Artificial Intelligence, Media and Communication, Digital Research, Academic Publishing, and Research Integrity**.
 
-Key verification signals include:
+---
 
--   Journal identity
--   Domain and website information
--   ISSN cross-checking
--   Indexing-related signals
--   Publisher information
--   Cloning / impersonation risks
--   Predatory-risk indicators
--   Emerging or regional journal signals
+# 🔎 What is Shodh Setu AI?
 
-------------------------------------------------------------------------
+The name **Shodh Setu (शोध सेतु)** combines two Indian concepts:
 
-## 🌉 What Does "Shodh Setu" Mean?
+- **Shodh (शोध)** — Research, investigation, scholarly inquiry
+- **Setu (सेतु)** — Bridge
 
-**Shodh Setu (शोध सेतु)** combines two Indian concepts:
+Together, **Shodh Setu** means **“Bridge for Research.”**
 
--   **Shodh (शोध)** --- Research, investigation, scholarly inquiry
--   **Setu (सेतु)** --- Bridge
+The name represents the central philosophy of the project: creating a safer bridge between **research discovery and trusted academic publishing**.
 
-Together, **Shodh Setu** means a **bridge for research**.
+Academic publishing has become increasingly complex. Researchers frequently encounter journals claiming prestigious indexing, international recognition, rapid publication, or association with established publishers.
 
-The name reflects the project's purpose: helping researchers build a
-safer bridge between **research discovery and trusted academic
-publishing**.
+But a journal's website, title, or indexing claim alone is not enough.
 
-------------------------------------------------------------------------
+Researchers should ask:
 
-## ✨ Key Features
+- Is this the legitimate journal website?
+- Does the journal actually belong to the stated publisher?
+- Is the ISSN associated with the correct publication?
+- Are indexing claims verifiable?
+- Could the website be a cloned or impersonated journal?
+- Are there indicators associated with deceptive or predatory publishing?
+- Has the journal's status changed?
 
-### 🔎 Journal Verification
+**Shodh Setu AI is designed to provide a first layer of structured research due diligence.**
 
-Enter a journal URL, domain, ISSN, or related journal information to
-begin a structured verification process.
+---
 
-### 📚 Indexing & ISSN Checks
+# ✨ Core Features
 
-Helps researchers examine indexing claims and journal identity
-information before relying on a journal for publication.
+## 🔎 1. Journal Verification
 
-### 🛡️ Cloned Journal Detection
+Users can begin verification by entering information such as:
 
-Highlights suspicious domain or identity patterns that may indicate a
-cloned, impersonated, or deceptive journal website.
+- Journal URL
+- Journal domain
+- ISSN
+- Journal-related information
 
-### ⚠️ Predatory-Risk Indicators
+The system organizes available signals into a structured verification workflow.
 
-Surfaces warning signals that may require additional investigation
-before manuscript submission.
+---
 
-### 🏢 Publisher Verification
+## 📚 2. ISSN & Indexing Checks
 
-Provides a structured view of publisher and journal information to
-support research due diligence.
+Shodh Setu AI helps researchers examine:
 
-### 📊 Research-Friendly Results
+- Journal identity
+- ISSN information
+- Indexing-related signals
+- Publication information
 
-The interface is designed to turn multiple verification signals into
-information that researchers can understand and investigate.
+The objective is to encourage researchers to **verify claims rather than simply trust them**.
 
-------------------------------------------------------------------------
+---
 
-## 🎯 Why Shodh Setu AI?
+## 🛡️ 3. Cloned Journal Detection
 
-Selecting a journal should involve more than checking a journal's title
-or website.
+One of the major concerns in contemporary academic publishing is the emergence of **cloned, impersonated, or deceptive journal websites**.
 
-Before submission, researchers should ask:
+Shodh Setu AI can highlight suspicious:
 
--   Is this the legitimate journal website?
--   Does the journal actually belong to the stated publisher?
--   Is the ISSN associated with the correct publication?
--   Are indexing claims verifiable?
--   Could this be a cloned journal?
--   Are there warning signs associated with deceptive or predatory
-    publishing?
--   Has the journal's status changed recently?
+- Domain patterns
+- Website identity patterns
+- Journal information inconsistencies
+- Publisher relationships
 
-**Shodh Setu AI** is designed as a first layer of research due
-diligence.
+These signals can help researchers identify situations requiring additional investigation.
 
-------------------------------------------------------------------------
+---
 
-## 👥 Who Can Use It?
+## ⚠️ 4. Predatory-Risk Indicators
 
-Shodh Setu AI is intended for:
+The platform surfaces warning signals that may require further due diligence.
 
--   👨‍🏫 Faculty members
--   🎓 PhD scholars
--   🔬 Researchers
--   🧑‍🎓 Postgraduate students
--   🏛️ Universities and research institutions
--   📝 Research supervisors
--   📖 Academic editors and reviewers
--   🌐 Research support and library teams
+Importantly, Shodh Setu AI does **not** automatically declare a journal fraudulent or predatory.
 
-------------------------------------------------------------------------
+A warning is a signal for investigation—not a final verdict.
 
-## 🧭 How It Works
+---
 
-``` text
-Journal / URL / ISSN
-        │
-        ▼
-Journal Identity Check
-        │
-        ├── Domain & Website Signals
-        ├── ISSN Cross-Check
-        ├── Indexing Signals
-        ├── Publisher Information
-        ├── Cloning-Risk Signals
-        └── Predatory-Risk Indicators
-        │
-        ▼
-Researcher Review
-        │
-        ▼
-Informed Publication Decision
+## 🏢 5. Publisher Verification
+
+The platform provides structured publisher and journal information to support researchers in evaluating whether the journal's identity and publisher claims appear consistent.
+
+---
+
+## 📊 6. Research-Friendly Results
+
+Academic verification can involve multiple sources and signals.
+
+Shodh Setu AI aims to transform these signals into information that researchers can **understand, inspect, question, and investigate** rather than presenting an unexplained automated score.
+
+---
+
+# 🧭 How Shodh Setu AI Works
+
+```text
+                 JOURNAL / URL / ISSN
+                         │
+                         ▼
+                JOURNAL IDENTITY CHECK
+                         │
+          ┌──────────────┼──────────────┐
+          ▼              ▼              ▼
+       DOMAIN          ISSN          INDEXING
+       SIGNALS        CHECKS          SIGNALS
+          │              │              │
+          └──────────────┼──────────────┘
+                         ▼
+                PUBLISHER INFORMATION
+                         │
+                         ▼
+              CLONING-RISK SIGNALS
+                         │
+                         ▼
+             PREDATORY-RISK SIGNALS
+                         │
+                         ▼
+                 RESEARCHER REVIEW
+                         │
+                         ▼
+             INFORMED PUBLICATION
+                    DECISION
 ```
 
-The goal is not to replace scholarly judgment. It is to make the initial
-verification process faster, clearer, and more systematic.
+The platform is designed to make the initial verification process **faster, clearer, and more systematic**, while keeping the researcher responsible for the final scholarly decision.
 
-------------------------------------------------------------------------
+---
 
-## 🟢 Example Risk Signals
+# 🟢 Risk Signal Framework
 
-  -----------------------------------------------------------------------
-  Indicator                           Meaning
-  ----------------------------------- -----------------------------------
-  🟢 **Verified Journal**             Positive verification signals
-                                      identified
+Shodh Setu AI can present verification signals using an intuitive risk-oriented framework:
 
-  🔵 **Emerging / Regional**          Journal requires contextual
-                                      evaluation
+| Signal | Interpretation |
+|---|---|
+| 🟢 **Verified Journal** | Positive verification signals identified |
+| 🔵 **Emerging / Regional** | Requires contextual evaluation |
+| 🟠 **Predatory-Risk Warning** | Additional due diligence recommended |
+| 🔴 **Cloned / Suspicious Domain** | Possible impersonation or cloning concern |
 
-  🟠 **Predatory Risk Warning**       Additional due diligence is
-                                      recommended
+These indicators must always be interpreted alongside their underlying evidence.
 
-  🔴 **Cloned / Suspicious Domain**   Possible impersonation or cloning
-                                      concern
-  -----------------------------------------------------------------------
+---
 
-**Important:** These indicators should be interpreted together with
-their underlying evidence.
+# 🎓 Who Can Use Shodh Setu AI?
 
-------------------------------------------------------------------------
+The platform is designed for:
 
-## 🔐 Responsible Use
+- 👨‍🏫 Faculty members
+- 🎓 PhD scholars
+- 🔬 Researchers
+- 🧑‍🎓 Postgraduate students
+- 🏛️ Universities and research institutions
+- 📝 Research supervisors
+- 📖 Academic editors and reviewers
+- 🌐 Research-support and library teams
 
-Shodh Setu AI is a **research-support and verification platform**, not a
-substitute for authoritative indexing databases, publishers, university
-policies, or researcher judgment.
 
-A risk warning does **not automatically prove** that a journal is
-fraudulent or predatory.
 
-Likewise, a positive result does not guarantee publication quality or
-future indexing status.
+---
 
-Researchers should independently verify important information through
-authoritative sources before submitting a manuscript or paying any
-publication fee.
+# 🌐 Live Application
 
-------------------------------------------------------------------------
+**Shodh Setu AI is available online as a research-verification prototype:**
 
-## 🌐 Verification Philosophy
+https://journalguard-ai.onrender.com/
 
-### Verify first. Submit second.
+---
+
+# 🧠 Research Philosophy
+
+## **Verify First. Submit Second.**
 
 Shodh Setu AI is built around a simple principle:
 
 > **Research deserves a trustworthy publishing path.**
 
-The platform aims to help researchers slow down before submission,
-inspect the evidence, and make a more informed journal-selection
-decision.
+The platform encourages researchers to pause before submission, examine the available evidence, and make a more informed journal-selection decision.
 
-------------------------------------------------------------------------
+In an academic ecosystem increasingly influenced by rapid publication models, automated discovery, AI-generated information, and deceptive online practices, **verification has become an essential part of responsible research practice.**
 
-## 🛠️ Technology
+---
 
-Depending on the implementation, Shodh Setu AI can integrate
-technologies such as:
+# 🤖 AI-Assisted Research Intelligence
 
--   HTML5
--   CSS3
--   JavaScript / TypeScript
--   React
--   Node.js
--   REST APIs
--   Journal metadata services
--   ISSN and indexing data sources
--   Domain intelligence
--   AI-assisted research analysis
+The project explores the application of AI and digital technologies to research-integrity workflows.
 
-Update this section to reflect the exact technologies and services used
-in the production implementation.
+Potential technology components include:
 
-------------------------------------------------------------------------
+- HTML5
+- CSS3
+- JavaScript / TypeScript
+- React
+- Node.js
+- REST APIs
+- Journal metadata services
+- ISSN and indexing data sources
+- Domain intelligence
+- AI-assisted research analysis
 
-## 📁 Suggested Repository Structure
+The exact technology stack should be updated according to the production implementation.
 
-``` text
+---
+
+# 🚀 Development Roadmap
+
+### Phase 1 — Verification
+
+- Journal identity verification
+- ISSN verification
+- Domain verification
+- Publisher information
+- Indexing signals
+
+### Phase 2 — Research Integrity
+
+- Cloned-journal detection
+- Predatory-risk intelligence
+- Publisher consistency checks
+- Evidence-based warnings
+
+### Phase 3 — Researcher Intelligence
+
+- Journal comparison
+- Watchlists
+- Verification history
+- Submission-readiness checklist
+
+### Phase 4 — Institutional Platform
+
+- University research dashboards
+- Research-office workflows
+- Faculty verification records
+- Research-integrity analytics
+
+
+
+---
+
+# 🔮 Future Vision
+
+The long-term vision of Shodh Setu AI is to evolve from a **journal-verification tool into a broader research-integrity intelligence ecosystem**.
+
+Future possibilities include:
+
+### 🔹 Researcher-Level Intelligence
+Personalized journal verification and submission-readiness tools.
+
+### 🔹 Institutional-Level Intelligence
+University dashboards for monitoring journal verification and research-integrity workflows.
+
+### 🔹 Historical Intelligence
+Tracking changes in journal websites, publishers, indexing claims, and journal status.
+
+### 🔹 Evidence-Based AI
+AI-generated explanations that show **why** a particular verification signal has been raised.
+
+### 🔹 Research Integrity Analytics
+Institutional insights into journal-selection patterns, risk indicators, and publishing practices.
+
+---
+
+# ⚠️ Responsible Use
+
+Shodh Setu AI is a **research-support and verification platform**.
+
+It is **not a replacement** for:
+
+- Authoritative indexing databases
+- Official publisher information
+- ISSN authorities
+- University research policies
+- Institutional research offices
+- Researcher judgment
+
+A risk warning does **not automatically prove** that a journal is fraudulent or predatory.
+
+Similarly, a positive verification result does not guarantee:
+
+- Publication quality
+- Editorial quality
+- Future indexing status
+- Acceptance
+- Citation performance
+- Long-term journal credibility
+
+Researchers should independently verify important information through authoritative sources before submitting a manuscript or paying a publication fee.
+
+---
+
+# 🛠️ Repository Structure
+
+```text
 shodhsetu-ai/
 │
 ├── assets/
@@ -243,160 +333,151 @@ shodhsetu-ai/
 │
 ├── README.md
 ├── package.json
+├── render.yaml
 └── LICENSE
 ```
 
-------------------------------------------------------------------------
+---
 
-## 🚀 Getting Started
+# 🚀 Getting Started
 
 Clone the repository:
 
-``` bash
+```bash
 git clone https://github.com/YOUR-USERNAME/shodhsetu-ai.git
 cd shodhsetu-ai
 ```
 
-Install dependencies if applicable:
+Install dependencies:
 
-``` bash
+```bash
 npm install
 ```
 
-Run the development server if applicable:
+Run the development server:
 
-``` bash
+```bash
 npm run dev
 ```
 
-Replace the commands above with the actual project setup if the
-implementation uses a different framework or deployment workflow.
+The exact commands should be adapted to the production implementation where necessary.
 
-------------------------------------------------------------------------
+---
 
-## 🌐 Deploy online with Render
+# ☁️ Deployment
 
-This repository includes a [`render.yaml`](./render.yaml) Blueprint for
-deploying the full-stack app as one public web service.
+The project can be deployed using **Render**.
 
-1. Create a new Blueprint at [render.com](https://render.com) and select this
-   repository.
-2. Keep the generated build command as `npm install && npm run build` and the
-   start command as `npm start`.
-3. Add `GEMINI_API_KEY` and any licensed `SCOPUS_API_KEY` or `WOS_API_KEY`
-   values in Render's environment settings. Never commit these values.
-4. Deploy. Render will use `/api/health` for service health checks.
+The existing deployment configuration uses:
 
-The app serves the Vite frontend and Express API from the same origin, so no
-additional frontend hosting or API proxy configuration is required.
+```text
+Build Command:
+npm install && npm run build
 
-------------------------------------------------------------------------
+Start Command:
+npm start
+```
 
-## 📌 Project Status
+Environment variables such as:
 
-**Research / Development Prototype**
+```text
+GEMINI_API_KEY
+SCOPUS_API_KEY
+WOS_API_KEY
+```
 
-The platform can be further developed through:
+should be configured securely through the deployment environment and **must never be committed to the repository**.
 
--   More authoritative indexing integrations
--   ISSN and journal metadata verification
--   Publisher verification
--   Domain-age and domain-intelligence signals
--   Advanced cloned-journal detection
--   Improved predatory-risk assessment
--   AI-assisted evidence summaries
--   Journal history and change tracking
--   Institutional research dashboards
+---
 
-------------------------------------------------------------------------
+# 📌 Current Status
 
-## 🧪 Future Roadmap
+### **Research / Development Prototype**
 
-### Phase 1 --- Verification
+The current project provides the foundation for a broader research-integrity platform.
 
--   Journal identity
--   ISSN
--   Domain
--   Publisher
--   Indexing signals
+Further development can include:
 
-### Phase 2 --- Research Integrity
+- More authoritative indexing integrations
+- Advanced ISSN verification
+- Publisher verification
+- Domain-age intelligence
+- Advanced cloned-journal detection
+- Improved predatory-risk assessment
+- AI-assisted evidence summaries
+- Journal history and change tracking
+- Institutional research dashboards
 
--   Cloning detection
--   Predatory-risk intelligence
--   Publisher consistency checks
--   Evidence-based warnings
 
-### Phase 3 --- Researcher Intelligence
 
--   Journal comparison
--   Watchlists
--   Verification history
--   Submission-readiness checklist
+---
 
-### Phase 4 --- Institutional Platform
+# 🤝 Contributions
 
--   University dashboards
--   Research office workflows
--   Faculty verification records
--   Research-integrity analytics
-
-------------------------------------------------------------------------
-
-## 👨‍💻 Created By
-
-**Dr. Rubaid Ashfaq**  
-Associate Professor / Program Leader  
-Amity School of Communication  
-Amity University Uttar Pradesh, Noida, India  
-
-**Co-creator: Zeba Nabi**  
-Research & Academic Collaborator  
-
-**Research & Professional Interests**
-
-Artificial Intelligence • Media • Digital Research • Research Integrity
-• Digital Publishing • Generative AI
-
-------------------------------------------------------------------------
-
-## ⭐ Contributing
-
-Contributions, suggestions, and research-integrity ideas are welcome.
+Researchers, developers, librarians, academic institutions, and research-integrity professionals are welcome to contribute.
 
 You can contribute by:
 
-1.  Forking the repository
-2.  Creating a feature branch
-3.  Making your changes
-4.  Testing the implementation
-5.  Opening a pull request
+1. Forking the repository
+2. Creating a feature branch
+3. Developing your changes
+4. Testing the implementation
+5. Opening a pull request
 
-Please ensure that proposed verification criteria are supported by
-reliable evidence and clearly documented.
+Proposed verification criteria should be supported by reliable evidence and clearly documented.
 
-------------------------------------------------------------------------
+---
 
-## 📄 License
+# 👥 About the Creators
 
-Add the appropriate open-source license here, such as **MIT**,
-**Apache-2.0**, or another license selected for the project.
+## Dr. Rubaid Ashfaq
 
-------------------------------------------------------------------------
+**Associate Professor / Program Leader**  
+Amity School of Communication  
+Amity University Uttar Pradesh, Noida, India
 
-## ⚠️ Disclaimer
+Research and professional interests include:
 
-Shodh Setu AI is intended to support academic due diligence.
+**Artificial Intelligence • Media • Digital Research • Research Integrity • Digital Publishing • Generative AI**
 
-The platform does not make a final determination about the legitimacy,
-quality, indexing status, or ethical standing of any journal solely from
-an automated result. Users remain responsible for checking authoritative
-sources and institutional requirements before submission.
+## Zeba Nabi
 
-------------------------------------------------------------------------
+**Co-Creator & Research/Academic Collaborator**
 
-## 🌉 SHODH SETU AI
+Shodh Setu AI represents a collaborative effort to explore how emerging technologies can support researchers in navigating the increasingly complicated academic publishing ecosystem.
 
-**Research Integrity Intelligence**
+---
 
-### Verify. Connect. Publish with Confidence.
+# 📄 License
+
+Select and add an appropriate open-source license for the repository, such as:
+
+- MIT
+- Apache-2.0
+- GPL-3.0
+
+The final license should reflect the intended intellectual-property and contribution model of the project.
+
+---
+
+# ⚠️ Disclaimer
+
+Shodh Setu AI is intended to support **academic due diligence**.
+
+The platform does not make a final determination regarding the legitimacy, quality, indexing status, or ethical standing of a journal solely from an automated result.
+
+Users remain responsible for checking authoritative sources and institutional requirements before submitting research or paying publication fees.
+
+---
+
+# 🌉 SHODH SETU AI
+
+## **Research Integrity Intelligence**
+
+### **Verify. Connect. Publish with Confidence.**
+
+**Co-created by**
+
+### **Dr. Rubaid Ashfaq × Zeba Nabi**
+
+*Building a safer bridge between research and responsible academic publishing.*
