@@ -19,9 +19,11 @@ import {
   CheckCircle2, 
   AlertTriangle, 
   FileText,
-  Database
+  Database,
+  UploadCloud
 } from 'lucide-react';
 import { getAdminAuditLog } from '../../services/researchIntelligenceService';
+import { ScopusExcelUploadModal } from './ScopusExcelUploadModal';
 
 interface AdminControlPanelViewProps {
   onRefreshData?: () => void;
@@ -33,6 +35,7 @@ export const AdminControlPanelView: React.FC<AdminControlPanelViewProps> = ({
   const [syncFrequency, setSyncFrequency] = useState<string>('daily');
   const [isSyncing, setIsSyncing] = useState<boolean>(false);
   const [syncSuccessMsg, setSyncSuccessMsg] = useState<string | null>(null);
+  const [isScopusModalOpen, setIsScopusModalOpen] = useState<boolean>(false);
 
   const auditLog = getAdminAuditLog();
 
@@ -143,6 +146,29 @@ export const AdminControlPanelView: React.FC<AdminControlPanelViewProps> = ({
         </div>
       </div>
 
+      {/* Scopus Custom Master List Batch Upload */}
+      <div className="p-5 rounded-2xl bg-orange-50/60 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-800/60 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2">
+            <UploadCloud className="w-4 h-4 text-orange-600 dark:text-orange-400" />
+            <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+              Elsevier Scopus Master List Batch Upload
+            </h3>
+          </div>
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 max-w-xl">
+            Directly upload custom or institutionally subscribed Scopus journal spreadsheets (.xlsx, .xls, .csv). ShodhSetu maps CiteScores, SNIP, SJR, ASJC subjects, and Quartiles into the live directory.
+          </p>
+        </div>
+
+        <button
+          onClick={() => setIsScopusModalOpen(true)}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold transition-colors shadow-2xs shrink-0 cursor-pointer"
+        >
+          <UploadCloud className="w-4 h-4" />
+          <span>Upload Scopus Excel</span>
+        </button>
+      </div>
+
       {/* Verification Queue & Audit Log Stream */}
       <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs space-y-3">
         <div className="flex items-center justify-between">
@@ -173,6 +199,15 @@ export const AdminControlPanelView: React.FC<AdminControlPanelViewProps> = ({
           ))}
         </div>
       </div>
+
+      {/* Scopus Excel Batch Upload Modal */}
+      <ScopusExcelUploadModal
+        isOpen={isScopusModalOpen}
+        onClose={() => setIsScopusModalOpen(false)}
+        onSuccess={() => {
+          if (onRefreshData) onRefreshData();
+        }}
+      />
     </div>
   );
 };

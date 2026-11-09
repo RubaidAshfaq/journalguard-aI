@@ -9,7 +9,7 @@
  * - DOAJ (Open Access, Diamond OA, APC)
  */
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { 
   Search, 
   Filter, 
@@ -23,7 +23,8 @@ import {
   Check, 
   FileText,
   Clock,
-  DollarSign
+  DollarSign,
+  UploadCloud
 } from 'lucide-react';
 import { IntelligenceJournal, ResearcherProfile } from '../../types';
 import { 
@@ -31,7 +32,7 @@ import {
   getStoredIntelligenceJournals, 
   JournalSearchFilterOptions 
 } from '../../services/researchIntelligenceService';
-
+import { ScopusExcelUploadModal } from './ScopusExcelUploadModal';
 
 interface MultiDatabaseJournalFinderProps {
   profile: ResearcherProfile;
@@ -55,6 +56,14 @@ export const MultiDatabaseJournalFinder: React.FC<MultiDatabaseJournalFinderProp
   const [selectedAbdc, setSelectedAbdc] = useState<'all' | 'A*' | 'A' | 'B' | 'C'>('all');
   const [diamondOnly, setDiamondOnly] = useState<boolean>(false);
   const [viewMode, setViewMode] = useState<'cards' | 'table'>('cards');
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState<boolean>(false);
+  const [catalogVersion, setCatalogVersion] = useState<number>(0);
+
+  useEffect(() => {
+    const handleUpdate = () => setCatalogVersion(v => v + 1);
+    window.addEventListener('shodhsetu_intel_journals_updated', handleUpdate);
+    return () => window.removeEventListener('shodhsetu_intel_journals_updated', handleUpdate);
+  }, []);
 
   const filterOptions: JournalSearchFilterOptions = useMemo(() => ({
     query: searchQuery,
@@ -73,7 +82,7 @@ export const MultiDatabaseJournalFinder: React.FC<MultiDatabaseJournalFinderProp
     return list;
   }, [filterOptions, diamondOnly]);
 
-  const allCatalog = useMemo(() => getStoredIntelligenceJournals(), []);
+  const allCatalog = useMemo(() => getStoredIntelligenceJournals(), [catalogVersion]);
   const allJournalsCount = allCatalog.length;
   const scopusCount = useMemo(() => allCatalog.filter(j => j.scopusIndexed).length, [allCatalog]);
   const wosCount = useMemo(() => allCatalog.filter(j => j.wosIndexed).length, [allCatalog]);
@@ -114,8 +123,17 @@ export const MultiDatabaseJournalFinder: React.FC<MultiDatabaseJournalFinderProp
         
         {/* Quick Database Selector Bar with live counts */}
         <div>
-          <div className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
-            Select Authoritative Scholarly Database
+          <div className="flex items-center justify-between gap-2 mb-2">
+            <div className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+              Select Authoritative Scholarly Database
+            </div>
+            <button
+              onClick={() => setIsUploadModalOpen(true)}
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-orange-50 dark:bg-orange-950/60 text-orange-700 dark:text-orange-300 border border-orange-200 dark:border-orange-800 hover:bg-orange-100 transition-colors cursor-pointer"
+            >
+              <UploadCloud className="w-3.5 h-3.5 text-orange-600" />
+              <span>Upload Scopus Excel</span>
+            </button>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <button
@@ -527,6 +545,14 @@ export const MultiDatabaseJournalFinder: React.FC<MultiDatabaseJournalFinderProp
           </div>
         </div>
       )}
+
+      {/* Scopus Excel Batch Upload Modal */}
+      <ScopusExcelUploadModal
+        isOpen={isUploadModalOpen}
+        onClose={() => setIsUploadModalOpen(false)}
+        existingJournals={allCatalog}
+      />
     </div>
   );
 };
+

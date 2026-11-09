@@ -345,11 +345,13 @@ The platform can be further developed through:
 
 ## 👨‍💻 Created By
 
-**Dr. Rubaid Ashfaq**
+**Dr. Rubaid Ashfaq**  
+Associate Professor / Program Leader  
+Amity School of Communication  
+Amity University Uttar Pradesh, Noida, India  
 
-Associate Professor / Program Leader\
-Amity School of Communication\
-Amity University Uttar Pradesh, Noida, India
+**Co-creator: Zeba Nabi**  
+Research & Academic Collaborator  
 
 **Research & Professional Interests**
 
