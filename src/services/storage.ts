@@ -10,6 +10,7 @@
 import { ResearcherProfile, SavedJournalEntry, VerificationResult, DelistedJournal, PlatformStats, CfpNotificationItem } from '../types';
 import { DEFAULT_RESEARCHER_PROFILE, DEMO_RESEARCHER_DEFAULT, getDemoVerificationResult } from './demoData';
 import { INITIAL_DELISTED_JOURNALS } from './delistedData';
+import { DISCONTINUED_SCOPUS_SEPTEMBER_2026 } from './discontinuedScopusSeptember2026';
 
 const PROFILE_KEY = 'jg_researcher_profile_v1';
 const SAVED_JOURNALS_KEY = 'jg_saved_journals_v1';
@@ -356,6 +357,17 @@ export function getStoredDelistedJournals(): DelistedJournal[] {
     if (raw) {
       const parsed = JSON.parse(raw);
       if (Array.isArray(parsed) && parsed.length > 0) {
+        const existingIssns = new Set(parsed.map(j => (j.issn || '').toLowerCase().trim()).filter(Boolean));
+        const existingTitles = new Set(parsed.map(j => (j.title || '').toLowerCase().trim()).filter(Boolean));
+        const missingImported = DISCONTINUED_SCOPUS_SEPTEMBER_2026.filter(journal =>
+          !existingIssns.has(journal.issn.toLowerCase().trim()) &&
+          !existingTitles.has(journal.title.toLowerCase().trim()),
+        );
+        if (missingImported.length > 0) {
+          const merged = [...missingImported, ...parsed];
+          localStorage.setItem(DELISTED_KEY, JSON.stringify(merged));
+          return merged;
+        }
         return parsed;
       }
     }
@@ -364,10 +376,13 @@ export function getStoredDelistedJournals(): DelistedJournal[] {
   }
 
   try {
-    localStorage.setItem(DELISTED_KEY, JSON.stringify(INITIAL_DELISTED_JOURNALS));
+    localStorage.setItem(DELISTED_KEY, JSON.stringify([
+      ...DISCONTINUED_SCOPUS_SEPTEMBER_2026,
+      ...INITIAL_DELISTED_JOURNALS,
+    ]));
   } catch {}
 
-  return INITIAL_DELISTED_JOURNALS;
+  return [...DISCONTINUED_SCOPUS_SEPTEMBER_2026, ...INITIAL_DELISTED_JOURNALS];
 }
 
 export function saveDelistedJournals(journals: DelistedJournal[]): void {
@@ -458,4 +473,3 @@ export function markAllCfpNotificationsAsRead(): CfpNotificationItem[] {
   saveCfpNotifications(updated);
   return updated;
 }
-
