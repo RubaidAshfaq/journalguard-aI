@@ -25,6 +25,7 @@ import {
 import { IntelligenceJournal } from '../../types';
 import { getStoredIntelligenceJournals } from '../../services/researchIntelligenceService';
 import { SCOPUS_NEW_TITLES } from '../../services/scopusNewTitles';
+import { SCOPUS_SOURCE_LIST } from '../../services/scopusSourceList';
 
 interface ScopusJournalViewProps {
   onOpenDossier: (journal: IntelligenceJournal) => void;
@@ -42,7 +43,7 @@ export const ScopusJournalView: React.FC<ScopusJournalViewProps> = ({
   const [apiCheckResult, setApiCheckResult] = useState<string | null>(null);
 
   const allJournals = useMemo(() => {
-    const catalogJournals: IntelligenceJournal[] = SCOPUS_NEW_TITLES.map((record, index) => ({
+    const newTitles: IntelligenceJournal[] = SCOPUS_NEW_TITLES.map((record, index) => ({
       id: `scopus-new-title-${index + 1}`,
       title: record.title,
       issn: record.issn || record.eIssn || 'N/A',
@@ -62,12 +63,41 @@ export const ScopusJournalView: React.FC<ScopusJournalViewProps> = ({
       openAccess: false,
     }));
 
+    const sourceList: IntelligenceJournal[] = SCOPUS_SOURCE_LIST.map(record => ({
+      id: `scopus-source-${record.id}`,
+      title: record.title,
+      issn: record.issn || record.eIssn || 'N/A',
+      eIssn: record.eIssn || undefined,
+      publisher: record.publisher,
+      country: 'International',
+      subjectAreas: record.subjects,
+      discipline: record.subjects[0] || 'Multidisciplinary',
+      scopusIndexed: true,
+      scopusDetails: {
+        status: record.status === 'ACTIVE' ? 'ACTIVE' : 'INACTIVE',
+        coverage: record.coverage || 'Not listed',
+        sourceId: record.id,
+        sourceType: record.sourceType,
+      },
+      wosIndexed: false,
+      verificationStatus: 'VERIFIED',
+      openAccess: false,
+    }));
+
     const existing = getStoredIntelligenceJournals();
-    const existingKeys = new Set(existing.map(journal => `${journal.title.toLowerCase()}|${journal.issn}`));
-    return [
-      ...existing,
-      ...catalogJournals.filter(journal => !existingKeys.has(`${journal.title.toLowerCase()}|${journal.issn}`)),
-    ];
+    const merged = [...existing, ...newTitles, ...sourceList];
+    const seen = new Set<string>();
+    return merged.filter(journal => {
+      const identifiers = [
+        journal.title.toLowerCase().trim(),
+        journal.issn.toLowerCase().replace(/[^a-z0-9]/g, ''),
+        (journal.eIssn || '').toLowerCase().replace(/[^a-z0-9]/g, ''),
+      ].filter(Boolean);
+      const key = identifiers.join('|');
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
   }, []);
 
   // Compute live quartile counts across the catalog
@@ -107,6 +137,7 @@ export const ScopusJournalView: React.FC<ScopusJournalViewProps> = ({
       return true;
     });
   }, [allJournals, selectedQuartile, selectedSubject, searchQuery]);
+  const visibleJournals = scopusJournals.slice(0, 100);
 
   const handleResetFilters = () => {
     setSearchQuery('');
@@ -173,6 +204,7 @@ export const ScopusJournalView: React.FC<ScopusJournalViewProps> = ({
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
           <div className="text-xs font-semibold text-slate-700 dark:text-slate-200">
             Filter by Elsevier Quartile Ranking:
+            <span className="ml-2 font-normal text-slate-400">Workbook-supplied quartiles are shown when available; imported source-list rows remain unranked.</span>
           </div>
           <div className="flex flex-wrap items-center gap-1.5">
             {[
@@ -248,8 +280,11 @@ export const ScopusJournalView: React.FC<ScopusJournalViewProps> = ({
       {/* Scopus Journals Count & List */}
       <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
         <span>
-          Showing <strong className="text-slate-800 dark:text-slate-200">{scopusJournals.length}</strong> authenticated Scopus journals
-          <span className="ml-2 text-slate-400">· Includes Scopus New Titles accepted September 2026</span>
+          Showing <strong className="text-slate-800 dark:text-slate-200">{scopusJournals.length}</strong> Scopus journals
+          {scopusJournals.length > visibleJournals.length && (
+            <span className="ml-2 text-slate-400">· Displaying the first {visibleJournals.length}; refine your search to narrow results</span>
+          )}
+          <span className="ml-2 text-slate-400">· Includes the September 2026 source-list export</span>
         </span>
         {(searchQuery || selectedQuartile !== 'all' || selectedSubject !== 'all') && (
           <button
@@ -282,7 +317,7 @@ export const ScopusJournalView: React.FC<ScopusJournalViewProps> = ({
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {scopusJournals.map((j) => (
+          {visibleJournals.map((j) => (
             <div 
               key={j.id}
               className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-orange-300 dark:hover:border-orange-800 transition-all shadow-2xs flex flex-col justify-between"
@@ -292,8 +327,13 @@ export const ScopusJournalView: React.FC<ScopusJournalViewProps> = ({
                   <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-orange-100 dark:bg-orange-950/80 text-orange-800 dark:text-orange-300 border border-orange-200 dark:border-orange-800">
                     Scopus {j.scopusQuartile || j.scopusDetails?.quartile || 'Indexed'}
                   </span>
-                  <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1">
-                    <CheckCircle2 className="w-3.5 h-3.5" /> Active Coverage
+                  <span className={`text-[11px] font-medium flex items-center gap-1 ${
+                    j.scopusDetails?.status === 'ACTIVE'
+                      ? 'text-emerald-600 dark:text-emerald-400'
+                      : 'text-amber-600 dark:text-amber-400'
+                  }`}>
+                    {j.scopusDetails?.status === 'ACTIVE' ? <CheckCircle2 className="w-3.5 h-3.5" /> : <AlertTriangle className="w-3.5 h-3.5" />}
+                    {j.scopusDetails?.status === 'ACTIVE' ? 'Active Coverage' : 'Inactive Coverage'}
                   </span>
                 </div>
 
@@ -318,19 +358,19 @@ export const ScopusJournalView: React.FC<ScopusJournalViewProps> = ({
                   <div>
                     <span className="text-slate-400 block text-[10px]">CiteScore</span>
                     <span className="text-base font-extrabold text-orange-700 dark:text-orange-300 tabular-nums">
-                      {j.scopusCiteScore || j.scopusDetails?.citeScore || (j.id.startsWith('scopus-new-title-') ? 'Not listed' : '4.2')}
+                      {j.scopusCiteScore || j.scopusDetails?.citeScore || (j.id.startsWith('scopus-') ? 'Not listed' : '4.2')}
                     </span>
                   </div>
                   <div>
                     <span className="text-slate-400 block text-[10px]">SNIP</span>
                     <span className="text-sm font-bold text-slate-800 dark:text-slate-200 tabular-nums">
-                      {j.scopusSnip || (j.id.startsWith('scopus-new-title-') ? 'Not listed' : '2.41')}
+                      {j.scopusSnip || (j.id.startsWith('scopus-') ? 'Not listed' : '2.41')}
                     </span>
                   </div>
                   <div>
                     <span className="text-slate-400 block text-[10px]">SJR</span>
                     <span className="text-sm font-bold text-slate-800 dark:text-slate-200 tabular-nums">
-                      {j.scopusSjr || (j.id.startsWith('scopus-new-title-') ? 'Not listed' : '1.85')}
+                      {j.scopusSjr || (j.id.startsWith('scopus-') ? 'Not listed' : '1.85')}
                     </span>
                   </div>
                 </div>
