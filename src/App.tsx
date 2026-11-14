@@ -27,6 +27,7 @@ import { ClonedJournalsRoll } from './components/ClonedJournalsRoll';
 import { DelistedRepositoryView } from './components/DelistedRepositoryView';
 import { CfpDiscoveryView } from './components/CfpDiscoveryView';
 import { ResearchIntelligenceView } from './components/research_intelligence/ResearchIntelligenceView';
+import { ResearchPaperDownloadsView } from './components/ResearchPaperDownloadsView';
 import { AlertOctagon, ShieldAlert, ArrowRight, Mail } from 'lucide-react';
 
 import { 
@@ -67,7 +68,7 @@ import { triggerDomainMismatchAlert, onDomainMismatchAlert } from './services/do
 import { DEMO_RESEARCHER_DEFAULT } from './services/demoData';
 
 export default function App() {
-  const [currentTab, setCurrentTab] = useState<'home' | 'intelligence' | 'dashboard' | 'finder' | 'cfp' | 'library' | 'checklist' | 'academy' | 'delisted'>('home');
+  const [currentTab, setCurrentTab] = useState<'home' | 'intelligence' | 'dashboard' | 'finder' | 'cfp' | 'library' | 'papers' | 'checklist' | 'academy' | 'delisted'>('home');
   const [profile, setProfile] = useState<ResearcherProfile>(getStoredProfile);
   const [savedJournals, setSavedJournals] = useState<SavedJournalEntry[]>(getSavedJournals);
   const [history, setHistory] = useState<VerificationResult[]>(getStoredHistory);
@@ -403,6 +404,10 @@ export default function App() {
               onRecheckJournal={(q) => handleVerify(q)}
               onOpenCompare={handleOpenCompare}
             />
+          )}
+
+          {currentTab === 'papers' && (
+            <ResearchPaperDownloadsView />
           )}
 
           {currentTab === 'checklist' && (

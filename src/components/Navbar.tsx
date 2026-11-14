@@ -24,7 +24,8 @@ import {
   Sun,
   Users,
   Activity,
-  Sparkles
+  Sparkles,
+  Download
 } from 'lucide-react';
 import { ResearcherProfile, PlatformStats, CfpNotificationItem } from '../types';
 import { CfpNotificationsDropdown } from './CfpNotificationsDropdown';
@@ -214,6 +215,17 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <Library className="w-3.5 h-3.5" />
               Watchlist
+            </button>
+            <button
+              onClick={() => setCurrentTab('papers')}
+              className={`px-2.5 py-1.5 rounded-lg transition-colors whitespace-nowrap flex items-center gap-1.5 ${
+                currentTab === 'papers'
+                  ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/80 dark:text-blue-300 font-semibold'
+                  : 'hover:text-slate-900 hover:bg-slate-100/70 dark:hover:text-white dark:hover:bg-slate-800'
+              }`}
+            >
+              <Download className="w-3.5 h-3.5" />
+              Paper Downloads
             </button>
             <button
               onClick={() => setCurrentTab('checklist')}
