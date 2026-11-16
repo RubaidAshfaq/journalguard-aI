@@ -8,7 +8,7 @@ import dotenv from 'dotenv';
 import { crawlJournalArchive } from './src/services/archiveCrawler';
 import { searchCallForPapers } from './src/services/cfpService';
 import { WOS_MASTER_JOURNAL_LIST, WOS_MASTER_LIST_METADATA } from './src/services/wosMasterJournalList';
-import { getResearchApiStatus, searchResearchApi, ResearchApiSource } from './src/services/researchApiService';
+import { checkResearchApiConnection, getResearchApiStatus, searchResearchApi, ResearchApiSource } from './src/services/researchApiService';
 
 dotenv.config();
 
@@ -395,6 +395,17 @@ app.get('/api/diagnostics', (_req: Request, res: Response) => {
 
 app.get('/api/research/status', (_req: Request, res: Response) => {
   res.json({ success: true, sources: getResearchApiStatus() });
+});
+
+app.get('/api/research/check', async (req: Request, res: Response) => {
+  const source = String(req.query.source || '') as ResearchApiSource;
+  const validSources: ResearchApiSource[] = ['sofya_mcp', 'holisticcare', 'core', 'datacite', 'osf', 'share_osf'];
+  if (!validSources.includes(source)) {
+    res.status(400).json({ success: false, error: 'Unsupported research API source.' });
+    return;
+  }
+  const result = await checkResearchApiConnection(source);
+  res.status(result.connected ? 200 : 502).json({ success: result.connected, ...result });
 });
 
 app.get('/api/research/search', async (req: Request, res: Response) => {

@@ -93,7 +93,9 @@ function ResearchApiSearch() {
   const [source, setSource] = useState<(typeof RESEARCH_SOURCES)[number]['id']>('core');
   const [results, setResults] = useState<Array<{ title: string; description?: string; authors?: string; doi?: string; url?: string; source: string }>>([]);
   const [message, setMessage] = useState<string | null>(null);
+  const [connectionMessage, setConnectionMessage] = useState<string | null>(null);
   const [isSearching, setIsSearching] = useState(false);
+  const [isCheckingConnection, setIsCheckingConnection] = useState(false);
 
   const search = async () => {
     if (!query.trim()) {
@@ -116,6 +118,20 @@ function ResearchApiSearch() {
     }
   };
 
+  const checkConnection = async () => {
+    setIsCheckingConnection(true);
+    setConnectionMessage(null);
+    try {
+      const response = await fetch(`/api/research/check?source=${source}`);
+      const data = await response.json();
+      setConnectionMessage(data.message || (data.success ? 'Connection verified.' : 'Connection failed.'));
+    } catch (error) {
+      setConnectionMessage(error instanceof Error ? error.message : 'Connection check failed.');
+    } finally {
+      setIsCheckingConnection(false);
+    }
+  };
+
   return (
     <section className="rounded-3xl border border-blue-200 bg-blue-50/50 p-6 shadow-sm">
       <div className="flex items-center gap-2">
@@ -134,8 +150,13 @@ function ResearchApiSearch() {
           {isSearching ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
           Search
         </button>
+        <button onClick={() => void checkConnection()} disabled={isCheckingConnection} className="inline-flex items-center justify-center gap-2 rounded-xl border border-blue-200 bg-white px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-100 disabled:opacity-60">
+          {isCheckingConnection && <RefreshCw className="w-4 h-4 animate-spin" />}
+          Check connection
+        </button>
       </div>
       {message && <p className="mt-3 text-xs text-slate-600">{message}</p>}
+      {connectionMessage && <p className="mt-2 text-xs font-medium text-slate-700">Connection: {connectionMessage}</p>}
       {results.length > 0 && (
         <div className="mt-4 space-y-2">
           {results.map((result, index) => (

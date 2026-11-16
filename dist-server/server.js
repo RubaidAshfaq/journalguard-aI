@@ -1579,6 +1579,36 @@ function getResearchApiStatus() {
     share_osf: { configured: true, authentication: "optional" }
   };
 }
+async function checkResearchApiConnection(source) {
+  const config = configs[source];
+  if (source === "sofya_mcp") {
+    return {
+      source,
+      connected: config.configured,
+      message: config.configured ? "Sofya MCP endpoint is configured; validate it from an MCP client." : "SOFYA_MCP_URL is not configured."
+    };
+  }
+  if (source === "osf" && !config.key) {
+    return { source, connected: false, message: "OSF_API_TOKEN is not configured; public OSF endpoints remain available." };
+  }
+  const endpoint = source === "osf" ? `${config.baseUrl}/users/me/` : source === "holisticcare" ? `${config.baseUrl}/resources?limit=1` : source === "share_osf" ? `${config.baseUrl}/` : source === "datacite" ? `${config.baseUrl}/dois?page[size]=1` : `${config.baseUrl}/search/works?q=test&limit=1`;
+  try {
+    const response = await fetch(endpoint, {
+      headers: headers(config),
+      signal: AbortSignal.timeout(1e4)
+    });
+    if (!response.ok) {
+      return { source, connected: false, message: `${source} returned HTTP ${response.status}.` };
+    }
+    return {
+      source,
+      connected: true,
+      message: source === "osf" ? "Authenticated OSF user token accepted." : `${source} endpoint is reachable.`
+    };
+  } catch (error) {
+    return { source, connected: false, message: `${source} connection failed: ${error?.message || "network error"}` };
+  }
+}
 function headers(config) {
   return {
     Accept: "application/json",
@@ -1961,6 +1991,16 @@ app.get("/api/diagnostics", (_req, res) => {
 });
 app.get("/api/research/status", (_req, res) => {
   res.json({ success: true, sources: getResearchApiStatus() });
+});
+app.get("/api/research/check", async (req, res) => {
+  const source = String(req.query.source || "");
+  const validSources = ["sofya_mcp", "holisticcare", "core", "datacite", "osf", "share_osf"];
+  if (!validSources.includes(source)) {
+    res.status(400).json({ success: false, error: "Unsupported research API source." });
+    return;
+  }
+  const result = await checkResearchApiConnection(source);
+  res.status(result.connected ? 200 : 502).json({ success: result.connected, ...result });
 });
 app.get("/api/research/search", async (req, res) => {
   const source = String(req.query.source || "");
