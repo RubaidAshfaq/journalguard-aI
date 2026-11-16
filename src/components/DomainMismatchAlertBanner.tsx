@@ -23,10 +23,21 @@ export const DomainMismatchAlertBanner: React.FC<DomainMismatchAlertBannerProps>
   onScrollToDetails,
   onOpenEditorAlert,
 }) => {
-  const cleanDomain = alert.canonicalDomain ? alert.canonicalDomain.trim() : '';
-  const canonicalUrl = cleanDomain.startsWith('http://') || cleanDomain.startsWith('https://') 
-    ? cleanDomain 
-    : `https://${cleanDomain}`;
+  const canonicalUrl = (() => {
+    const cleanDomain = alert.canonicalDomain?.trim() || '';
+    if (!cleanDomain || cleanDomain === 'Authoritative Publisher Record') return '';
+    try {
+      const parsed = new URL(
+        cleanDomain.startsWith('http://') || cleanDomain.startsWith('https://')
+          ? cleanDomain
+          : `https://${cleanDomain}`,
+      );
+      if (!['http:', 'https:'].includes(parsed.protocol) || !parsed.hostname.includes('.')) return '';
+      return parsed.toString();
+    } catch {
+      return '';
+    }
+  })();
 
   return (
     <div 
@@ -99,7 +110,7 @@ export const DomainMismatchAlertBanner: React.FC<DomainMismatchAlertBannerProps>
               </button>
             )}
 
-            {alert.canonicalDomain && alert.canonicalDomain !== 'Authoritative Publisher Record' && (
+            {canonicalUrl && (
               <a
                 href={canonicalUrl}
                 target="_blank"

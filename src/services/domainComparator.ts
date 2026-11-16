@@ -682,9 +682,9 @@ export function triggerDomainMismatchAlert(
     return null;
   }
 
-  const canonicalDomain = 
-    result.cloneGuard.domainDetails?.canonicalHost ||
+  const canonicalDomain =
     result.cloneGuard.legitimateRecord?.officialWebsite ||
+    result.cloneGuard.domainDetails?.canonicalHost ||
     result.cloneGuard.domainComparison?.primaryExpectedHost ||
     '';
 
