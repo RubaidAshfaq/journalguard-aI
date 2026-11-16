@@ -5,12 +5,14 @@
     color-scheme: light;
     --shodh-bg: #f5f7fb;
     --shodh-ink: #172033;
+    --shodh-purple: #6d28d9;
   }
 
   html.dark {
     color-scheme: dark;
     --shodh-bg: #090d18;
     --shodh-ink: #eef2ff;
+    --shodh-purple: #a78bfa;
   }
 
   body {

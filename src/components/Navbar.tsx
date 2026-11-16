@@ -26,6 +26,7 @@ import {
   Activity,
   Sparkles,
   Download
+  ,MoreHorizontal
 } from 'lucide-react';
 import { ResearcherProfile, PlatformStats, CfpNotificationItem } from '../types';
 import { CfpNotificationsDropdown } from './CfpNotificationsDropdown';
@@ -66,6 +67,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     }
     return false;
   });
+  const [isMoreOpen, setIsMoreOpen] = useState(false);
 
   // Apply dark mode on initial load
   useEffect(() => {
@@ -167,17 +169,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               Dashboard
             </button>
             <button
-              onClick={() => setCurrentTab('delisted')}
-              className={`px-2.5 py-1.5 rounded-lg transition-colors whitespace-nowrap flex items-center gap-1.5 ${
-                currentTab === 'delisted'
-                  ? 'bg-rose-50 text-rose-700 dark:bg-rose-950/80 dark:text-rose-300 font-bold border border-rose-200 dark:border-rose-800'
-                  : 'hover:text-rose-700 hover:bg-rose-50/50 dark:hover:text-rose-300 dark:hover:bg-slate-800'
-              }`}
-            >
-              <ShieldAlert className="w-3.5 h-3.5 text-rose-600" />
-              <span>Delisted Repository</span>
-            </button>
-            <button
               onClick={() => setCurrentTab('finder')}
               className={`px-2.5 py-1.5 rounded-lg transition-colors whitespace-nowrap flex items-center gap-1.5 ${
                 currentTab === 'finder'
@@ -188,61 +179,43 @@ export const Navbar: React.FC<NavbarProps> = ({
               <Compass className="w-3.5 h-3.5" />
               Find Journals
             </button>
-            <button
-              onClick={() => setCurrentTab('cfp')}
-              className={`px-2.5 py-1.5 rounded-lg transition-colors whitespace-nowrap flex items-center gap-1.5 ${
-                currentTab === 'cfp'
-                  ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/80 dark:text-blue-300 font-semibold border border-blue-200 dark:border-blue-800'
-                  : 'hover:text-slate-900 hover:bg-slate-100/70 dark:hover:text-white dark:hover:bg-slate-800'
-              }`}
-            >
-              <Sparkles className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-              <span>Call for Papers</span>
-            </button>
-            <button
-              onClick={() => setCurrentTab('library')}
-              className={`px-2.5 py-1.5 rounded-lg transition-colors whitespace-nowrap flex items-center gap-1.5 ${
-                currentTab === 'library'
-                  ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/80 dark:text-blue-300 font-semibold'
-                  : 'hover:text-slate-900 hover:bg-slate-100/70 dark:hover:text-white dark:hover:bg-slate-800'
-              }`}
-            >
-              <Library className="w-3.5 h-3.5" />
-              Watchlist
-            </button>
-            <button
-              onClick={() => setCurrentTab('papers')}
-              className={`px-2.5 py-1.5 rounded-lg transition-colors whitespace-nowrap flex items-center gap-1.5 ${
-                currentTab === 'papers'
-                  ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/80 dark:text-blue-300 font-semibold'
-                  : 'hover:text-slate-900 hover:bg-slate-100/70 dark:hover:text-white dark:hover:bg-slate-800'
-              }`}
-            >
-              <Download className="w-3.5 h-3.5" />
-              Paper Downloads
-            </button>
-            <button
-              onClick={() => setCurrentTab('checklist')}
-              className={`px-2.5 py-1.5 rounded-lg transition-colors whitespace-nowrap flex items-center gap-1.5 ${
-                currentTab === 'checklist'
-                  ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/80 dark:text-blue-300 font-semibold'
-                  : 'hover:text-slate-900 hover:bg-slate-100/70 dark:hover:text-white dark:hover:bg-slate-800'
-              }`}
-            >
-              <CheckSquare className="w-3.5 h-3.5" />
-              Checklist
-            </button>
-            <button
-              onClick={() => setCurrentTab('academy')}
-              className={`px-2.5 py-1.5 rounded-lg transition-colors whitespace-nowrap flex items-center gap-1.5 ${
-                currentTab === 'academy'
-                  ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/80 dark:text-blue-300 font-semibold'
-                  : 'hover:text-slate-900 hover:bg-slate-100/70 dark:hover:text-white dark:hover:bg-slate-800'
-              }`}
-            >
-              <BookOpen className="w-3.5 h-3.5" />
-              Academy
-            </button>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setIsMoreOpen((open) => !open)}
+                className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-slate-600 transition-colors hover:bg-slate-100/70 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+                aria-expanded={isMoreOpen}
+                aria-haspopup="menu"
+              >
+                <MoreHorizontal className="h-4 w-4" />
+                More
+              </button>
+              {isMoreOpen && (
+                <div role="menu" className="shodh-glass absolute right-0 top-full z-50 mt-2 w-52 rounded-2xl p-1.5 shadow-xl">
+                  {[
+                    ['cfp', 'Call for Papers', Sparkles],
+                    ['library', 'Watchlist', Library],
+                    ['papers', 'Paper Downloads', Download],
+                    ['checklist', 'Checklist', CheckSquare],
+                    ['academy', 'Academy', BookOpen],
+                    ['delisted', 'Delisted Repository', ShieldAlert],
+                  ].map(([tab, label, Icon]) => (
+                    <button
+                      key={tab as string}
+                      type="button"
+                      role="menuitem"
+                      onClick={() => { setCurrentTab(tab as string); setIsMoreOpen(false); }}
+                      className={`flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-xs font-semibold ${
+                        currentTab === tab ? 'bg-purple-100 text-purple-800 dark:bg-purple-950/60 dark:text-purple-200' : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'
+                      }`}
+                    >
+                      <Icon className="h-3.5 w-3.5" />
+                      {label as string}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </nav>
 
           {/* Zone 3: Live Counters, Dark Mode Toggle & Quick Actions */}

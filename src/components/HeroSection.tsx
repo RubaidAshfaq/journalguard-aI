@@ -83,9 +83,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     <div className="relative overflow-hidden pt-8 pb-14 lg:pt-14 lg:pb-20">
       {/* Decorative Material 3 soft ambient gradients */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 -z-10 pointer-events-none opacity-60">
-        <div className="absolute top-10 left-1/4 w-72 h-72 rounded-full bg-blue-400/20 blur-3xl" />
-        <div className="absolute top-20 right-1/4 w-80 h-80 rounded-full bg-purple-400/20 blur-3xl" />
-        <div className="absolute top-32 left-1/2 w-64 h-64 rounded-full bg-emerald-400/15 blur-3xl" />
+        <div className="absolute top-10 left-1/4 w-72 h-72 rounded-full bg-violet-400/18 blur-3xl" />
+        <div className="absolute top-20 right-1/4 w-80 h-80 rounded-full bg-fuchsia-400/16 blur-3xl" />
+        <div className="absolute top-32 left-1/2 w-64 h-64 rounded-full bg-indigo-400/12 blur-3xl" />
       </div>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
@@ -110,15 +110,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
         {/* Hero Title */}
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.12] mb-4">
-          Before You Submit.{' '}
-          <span className="block bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
-            Verify Your Journal.
+          Research intelligence,{' '}
+          <span className="block bg-gradient-to-r from-violet-700 via-purple-600 to-fuchsia-600 bg-clip-text text-transparent">
+            simplified.
           </span>
         </h1>
 
         {/* Supporting description */}
         <p className="max-w-2xl mx-auto text-base sm:text-lg text-slate-600 dark:text-slate-300 mb-6 font-normal leading-relaxed">
-          Check indexing, journal identity, publisher information, cloning risks, and predatory-risk indicators before submitting your research.
+          Search journals, papers, authors, DOI and publishers from one calm, evidence-first workspace.
         </p>
 
         {/* Google-Themed Live Statistics Strip (Visitors & Journals Examined) */}
@@ -187,7 +187,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <form onSubmit={handleSubmit} className="max-w-3xl mx-auto mb-6">
           {!isAdvancedMode ? (
             /* Single Quick Input */
-            <div className="relative flex flex-col sm:flex-row items-stretch gap-2 p-2 bg-white rounded-2xl shadow-xl shadow-slate-200/60 border border-slate-200 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100 transition-all">
+            <div className="relative flex flex-col sm:flex-row items-stretch gap-2 p-2 bg-white/90 rounded-2xl shadow-xl shadow-purple-200/40 border border-purple-200/70 focus-within:border-purple-500 focus-within:ring-4 focus-within:ring-purple-100 transition-all backdrop-blur">
               <div className="relative flex-1 flex items-center pl-3">
                 <Search className="w-5 h-5 text-slate-400 shrink-0 mr-3" />
                 <input
@@ -202,7 +202,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <button
                 type="submit"
                 disabled={isLoading || !searchInput.trim()}
-                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 text-white font-semibold rounded-xl text-sm transition-all shadow-sm flex items-center justify-center gap-2 shrink-0 cursor-pointer disabled:cursor-not-allowed"
+                className="px-6 py-3 bg-purple-700 hover:bg-purple-800 disabled:bg-slate-300 text-white font-semibold rounded-xl text-sm transition-all shadow-sm flex items-center justify-center gap-2 shrink-0 cursor-pointer disabled:cursor-not-allowed"
               >
                 {isLoading ? (
                   <>
