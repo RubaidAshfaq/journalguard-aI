@@ -93,14 +93,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors">
-      {/* Google Colorful 4-Color Brand Stripe */}
-      <div className="h-1 w-full grid grid-cols-4">
-        <span className="bg-[#4285F4]"></span>
-        <span className="bg-[#EA4335]"></span>
-        <span className="bg-[#FBBC05]"></span>
-        <span className="bg-[#34A853]"></span>
-      </div>
+    <header className="sticky top-0 z-40 shodh-glass border-b border-slate-200/70 dark:border-slate-800/70 transition-colors">
+      <div className="h-0.5 w-full bg-gradient-to-r from-cyan-400 via-indigo-500 to-violet-500" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-3">

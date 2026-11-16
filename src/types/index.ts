@@ -333,6 +333,9 @@ export interface IssueArticleItem {
   doi?: string;
   authors?: string;
   pages?: string;
+  publicationDate?: string;
+  pdfUrl?: string;
+  source?: string;
 }
 
 export interface IssueDrillDownItem {
@@ -359,6 +362,24 @@ export interface ArchiveAuditCoverage {
   crawledAt: string;
   isRealTimeCrawl: boolean;
   statusMessage?: string;
+  earliestPublicationYear?: number;
+  latestPublicationYear?: number;
+  missingYears?: number[];
+  dataGaps?: string[];
+  confidence?: number;
+  completenessStatus?: 'COMPLETE' | 'INCOMPLETE' | 'UNVERIFIED';
+}
+
+export interface PublicationAuditQuality {
+  earliestYear?: number;
+  latestYear?: number;
+  yearsAudited: number;
+  missingYears: number[];
+  duplicateArticlesFiltered: number;
+  failedIssues: number;
+  confidence: number;
+  status: 'COMPLETE' | 'INCOMPLETE' | 'UNVERIFIED';
+  dataGaps: string[];
 }
 
 export interface AnnualPublicationRecord {
@@ -385,6 +406,7 @@ export interface PublicationBehaviourAnalysis {
   issn: string;
   publisher: string;
   archiveAudit?: ArchiveAuditCoverage;
+  auditQuality?: PublicationAuditQuality;
   allIssuesList?: IssueDrillDownItem[];
   historicalBaseline: {
     baselineYears: string; // e.g. "2020 – 2024"

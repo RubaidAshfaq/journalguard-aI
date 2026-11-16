@@ -446,8 +446,7 @@ function buildPublicationBehaviourFromIssues(journalTitle, issn, publisher, issu
     yearsMap[yr].issueList.push(iss);
   }
   const allYearsSorted = Object.keys(yearsMap).map(Number).sort((a, b) => a - b);
-  const relevantYears = allYearsSorted.filter((y) => y >= 2021 && y <= 2026);
-  const yearsToProcess = relevantYears.length >= 3 ? relevantYears : allYearsSorted.slice(-6);
+  const yearsToProcess = allYearsSorted;
   let prevPapers = 0;
   let prevIssues = 0;
   const yearlyData = yearsToProcess.map((yr) => {
@@ -464,9 +463,9 @@ function buildPublicationBehaviourFromIssues(journalTitle, issn, publisher, issu
     else if (dominantChange >= 30) status = issuePctChange < 0 ? "Decline" : "Moderate Increase";
     let notes = void 0;
     const volumeCount = data.volumes.size;
-    if (data.specialIssues > 0 && yr === 2026) {
+    if (data.specialIssues > 0) {
       notes = `Surge of ${data.specialIssues} special issues (${data.regularIssues} regular + ${data.specialIssues} special)`;
-    } else if (yr === 2026) {
+    } else if (yr === allYearsSorted[allYearsSorted.length - 1]) {
       notes = "Current reporting period";
     }
     return {
@@ -488,7 +487,7 @@ function buildPublicationBehaviourFromIssues(journalTitle, issn, publisher, issu
   });
   const baselineRecords = yearlyData.slice(0, yearlyData.length - 1);
   const currentRecord = yearlyData[yearlyData.length - 1] || {
-    year: 2026,
+    year: (/* @__PURE__ */ new Date()).getFullYear(),
     issues: 0,
     papers: 0,
     papersPerIssue: 0,
@@ -633,11 +632,39 @@ function buildPublicationBehaviourFromIssues(journalTitle, issn, publisher, issu
   const issueChangeVerb = currentRecord.issues > avgIssuesPerYear ? `increased to ${currentRecord.issues}` : `remained stable at ${currentRecord.issues}`;
   const paperChangeVerb = currentRecord.papersPerIssue > avgPapersPerIssue ? `increased to ${currentRecord.papersPerIssue}` : `remained at ${currentRecord.papersPerIssue}`;
   const summaryText = `The journal historically followed a relatively stable publication cycle of approximately ${avgIssuesPerYear} issues per year and ${avgPapersPerIssue} papers per issue. During the current period, publication frequency has ${issueChangeVerb} issues and the average number of papers per issue has ${paperChangeVerb}. The journal's annual publication volume is therefore ${volumeComparisonText} its historical baseline.`;
+  const earliestYear = allYearsSorted[0];
+  const latestYear = allYearsSorted[allYearsSorted.length - 1];
+  const missingYears = earliestYear && latestYear ? Array.from({ length: latestYear - earliestYear + 1 }, (_, index) => earliestYear + index).filter((year) => !yearsMap[year]) : [];
+  const dataGaps = [
+    ...coverage.issuesFailed > 0 ? [`${coverage.issuesFailed} issue pages could not be processed.`] : [],
+    ...missingYears.length > 0 ? [`No archive records were found for ${missingYears.join(", ")}.`] : [],
+    ...coverage.issuesDetected !== coverage.issuesProcessed ? ["The discovered archive is not fully accessible."] : []
+  ];
+  const auditQuality = {
+    earliestYear,
+    latestYear,
+    yearsAudited: yearlyData.length,
+    missingYears,
+    duplicateArticlesFiltered: coverage.duplicateArticlesFiltered,
+    failedIssues: coverage.issuesFailed,
+    confidence: Math.max(0, Math.min(100, Math.round(
+      (yearlyData.length > 0 ? 50 : 0) + (coverage.issuesDetected > 0 && coverage.issuesProcessed === coverage.issuesDetected ? 25 : 0) + (coverage.issuesFailed === 0 ? 15 : 0) + (missingYears.length === 0 ? 10 : 0)
+    ))),
+    status: dataGaps.length === 0 && yearlyData.length > 0 ? "COMPLETE" : "INCOMPLETE",
+    dataGaps
+  };
+  coverage.earliestPublicationYear = earliestYear;
+  coverage.latestPublicationYear = latestYear;
+  coverage.missingYears = missingYears;
+  coverage.dataGaps = dataGaps;
+  coverage.confidence = auditQuality.confidence;
+  coverage.completenessStatus = auditQuality.status;
   return {
     journalTitle,
     issn,
     publisher,
     archiveAudit: coverage,
+    auditQuality,
     allIssuesList: issues,
     historicalBaseline: {
       baselineYears,

@@ -16,7 +16,8 @@ import {
   IssueArticleItem, 
   ArchiveAuditCoverage,
   VolumeAnomalyTier,
-  VolumeAnomalyExplanation
+  VolumeAnomalyExplanation,
+  PublicationAuditQuality
 } from '../types';
 
 /**
@@ -544,10 +545,10 @@ export function buildPublicationBehaviourFromIssues(
     yearsMap[yr].issueList.push(iss);
   }
 
-  // Focus on 2021 - 2026 (or all years if fewer)
+  // Audit the complete discovered timeline. Limiting this list to recent years
+  // hides publication-frequency changes and makes the baseline non-auditable.
   const allYearsSorted = Object.keys(yearsMap).map(Number).sort((a, b) => a - b);
-  const relevantYears = allYearsSorted.filter(y => y >= 2021 && y <= 2026);
-  const yearsToProcess = relevantYears.length >= 3 ? relevantYears : allYearsSorted.slice(-6);
+  const yearsToProcess = allYearsSorted;
 
   let prevPapers = 0;
   let prevIssues = 0;
@@ -567,9 +568,9 @@ export function buildPublicationBehaviourFromIssues(
 
     let notes: string | undefined = undefined;
     const volumeCount = data.volumes.size;
-    if (data.specialIssues > 0 && yr === 2026) {
+    if (data.specialIssues > 0) {
       notes = `Surge of ${data.specialIssues} special issues (${data.regularIssues} regular + ${data.specialIssues} special)`;
-    } else if (yr === 2026) {
+    } else if (yr === allYearsSorted[allYearsSorted.length - 1]) {
       notes = 'Current reporting period';
     }
 
@@ -594,7 +595,7 @@ export function buildPublicationBehaviourFromIssues(
   // 2. Establish Historical Baseline (2021 – 2025)
   const baselineRecords = yearlyData.slice(0, yearlyData.length - 1);
   const currentRecord = yearlyData[yearlyData.length - 1] || {
-    year: 2026,
+    year: new Date().getFullYear(),
     issues: 0,
     papers: 0,
     papersPerIssue: 0,
@@ -797,11 +798,46 @@ export function buildPublicationBehaviourFromIssues(
 
   const summaryText = `The journal historically followed a relatively stable publication cycle of approximately ${avgIssuesPerYear} issues per year and ${avgPapersPerIssue} papers per issue. During the current period, publication frequency has ${issueChangeVerb} issues and the average number of papers per issue has ${paperChangeVerb}. The journal's annual publication volume is therefore ${volumeComparisonText} its historical baseline.`;
 
+  const earliestYear = allYearsSorted[0];
+  const latestYear = allYearsSorted[allYearsSorted.length - 1];
+  const missingYears = earliestYear && latestYear
+    ? Array.from({ length: latestYear - earliestYear + 1 }, (_, index) => earliestYear + index)
+      .filter(year => !yearsMap[year])
+    : [];
+  const dataGaps = [
+    ...(coverage.issuesFailed > 0 ? [`${coverage.issuesFailed} issue pages could not be processed.`] : []),
+    ...(missingYears.length > 0 ? [`No archive records were found for ${missingYears.join(', ')}.`] : []),
+    ...(coverage.issuesDetected !== coverage.issuesProcessed ? ['The discovered archive is not fully accessible.'] : []),
+  ];
+  const auditQuality: PublicationAuditQuality = {
+    earliestYear,
+    latestYear,
+    yearsAudited: yearlyData.length,
+    missingYears,
+    duplicateArticlesFiltered: coverage.duplicateArticlesFiltered,
+    failedIssues: coverage.issuesFailed,
+    confidence: Math.max(0, Math.min(100, Math.round(
+      (yearlyData.length > 0 ? 50 : 0) +
+      (coverage.issuesDetected > 0 && coverage.issuesProcessed === coverage.issuesDetected ? 25 : 0) +
+      (coverage.issuesFailed === 0 ? 15 : 0) +
+      (missingYears.length === 0 ? 10 : 0)
+    ))),
+    status: dataGaps.length === 0 && yearlyData.length > 0 ? 'COMPLETE' : 'INCOMPLETE',
+    dataGaps,
+  };
+  coverage.earliestPublicationYear = earliestYear;
+  coverage.latestPublicationYear = latestYear;
+  coverage.missingYears = missingYears;
+  coverage.dataGaps = dataGaps;
+  coverage.confidence = auditQuality.confidence;
+  coverage.completenessStatus = auditQuality.status;
+
   return {
     journalTitle,
     issn,
     publisher,
     archiveAudit: coverage,
+    auditQuality,
     allIssuesList: issues,
     historicalBaseline: {
       baselineYears,

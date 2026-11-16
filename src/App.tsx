@@ -245,7 +245,7 @@ export default function App() {
       className={`min-h-screen flex flex-col transition-colors duration-700 ${
         isPredatoryOrClone
           ? 'bg-gradient-to-b from-[#5c0a0a] via-[#7f1d1d] to-[#450a0a] text-white selection:bg-rose-500 selection:text-white'
-          : 'bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 selection:bg-blue-100 dark:selection:bg-blue-900'
+          : 'bg-transparent text-slate-900 dark:text-slate-100 selection:bg-indigo-100 dark:selection:bg-indigo-900'
       }`}
     >
       

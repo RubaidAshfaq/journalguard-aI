@@ -99,7 +99,8 @@ export const JournalBehaviourMonitor: React.FC<JournalBehaviourMonitorProps> = (
     specialIssueBreakdown,
     delistedNotice,
     archiveAudit,
-    allIssuesList
+    allIssuesList,
+    auditQuality
   } = analysis;
 
   const isAnomaly = anomalyTier !== 'NORMAL';
@@ -241,7 +242,7 @@ export const JournalBehaviourMonitor: React.FC<JournalBehaviourMonitorProps> = (
             Journal Publication Behaviour / Volume Anomaly Monitor
           </h3>
           <p className="text-xs text-slate-600 dark:text-slate-400 max-w-2xl">
-            Crawls actual journal archive pages, opens every issue to count published research papers, and compares latest publication volume against established historical baselines.
+            Audits the complete discovered timeline from the earliest accessible archive year through the latest record, counting issue-level articles and preserving evidence gaps.
           </p>
         </div>
 
@@ -274,7 +275,7 @@ export const JournalBehaviourMonitor: React.FC<JournalBehaviourMonitorProps> = (
         </div>
       </div>
 
-      {/* 2. Archive Completeness Check Banner (Requirement #13) */}
+      {/* 2. Archive Completeness Check Banner */}
       <div className="p-4 rounded-2xl bg-slate-900 text-white border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="space-y-1">
           <div className="flex items-center gap-2 flex-wrap">
@@ -297,6 +298,18 @@ export const JournalBehaviourMonitor: React.FC<JournalBehaviourMonitorProps> = (
           <p className="text-[11px] text-slate-400">
             {archiveAudit?.statusMessage || 'No archive crawl has been completed for this journal.'}
           </p>
+          <div className="flex flex-wrap gap-2 text-[10px] font-semibold">
+            <span className="rounded-full bg-white/10 px-2 py-1 text-slate-200">
+              {auditQuality?.earliestYear ?? '—'}–{auditQuality?.latestYear ?? '—'} audited
+            </span>
+            <span className={`rounded-full px-2 py-1 ${
+              auditQuality?.status === 'COMPLETE'
+                ? 'bg-emerald-500/20 text-emerald-300'
+                : 'bg-amber-500/20 text-amber-300'
+            }`}>
+              {auditQuality?.status || 'UNVERIFIED'} · {auditQuality?.confidence ?? 0}% confidence
+            </span>
+          </div>
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
@@ -321,6 +334,23 @@ export const JournalBehaviourMonitor: React.FC<JournalBehaviourMonitorProps> = (
           </button>
         </div>
       </div>
+
+      {auditQuality?.status !== 'COMPLETE' && (
+        <div className="rounded-2xl border border-amber-200 bg-amber-50/80 p-4 text-xs text-amber-950 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-100">
+          <div className="flex items-center gap-2 font-bold">
+            <Info className="h-4 w-4" />
+            Historical audit is incomplete
+          </div>
+          <p className="mt-1 leading-relaxed">
+            This result is evidence-based but not definitive. Missing years or inaccessible issue pages are shown as data gaps rather than estimated publication output.
+          </p>
+          {auditQuality?.dataGaps && auditQuality.dataGaps.length > 0 && (
+            <ul className="mt-2 list-disc space-y-1 pl-5">
+              {auditQuality.dataGaps.map((gap) => <li key={gap}>{gap}</li>)}
+            </ul>
+          )}
+        </div>
+      )}
 
       {crawlFeedback && (
         <div className="p-3 rounded-xl bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-blue-900 dark:text-blue-200 text-xs flex items-center gap-2">
