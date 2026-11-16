@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { IntelligenceJournal, WosCoreCollectionType } from '../../types';
 import { getStoredIntelligenceJournals } from '../../services/researchIntelligenceService';
+import { WOS_MASTER_LIST_METADATA } from '../../services/wosMasterJournalList';
 
 interface WosJournalViewProps {
   onOpenDossier: (journal: IntelligenceJournal) => void;
@@ -106,6 +107,15 @@ export const WosJournalView: React.FC<WosJournalViewProps> = ({
           <p className="text-xs sm:text-sm text-teal-100/90 mt-1 leading-relaxed">
             Verify official inclusion in Clarivate Core Collection editions: SCIE, SSCI, AHCI, and ESCI with authentic Journal Citation Reports (JCR) Impact Factors.
           </p>
+          <a
+            href={WOS_MASTER_LIST_METADATA.sourceUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1 mt-3 text-xs text-teal-100 hover:text-white underline underline-offset-2"
+          >
+            Master Journal List source · Updated {new Date(`${WOS_MASTER_LIST_METADATA.lastUpdated}T00:00:00Z`).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC' })}
+            <ExternalLink className="w-3 h-3" />
+          </a>
         </div>
       </div>
 
@@ -297,4 +307,3 @@ export const WosJournalView: React.FC<WosJournalViewProps> = ({
     </div>
   );
 };
-

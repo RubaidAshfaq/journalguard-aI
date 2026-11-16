@@ -128,16 +128,16 @@ export const JournalBehaviourMonitor: React.FC<JournalBehaviourMonitorProps> = (
         const data = await res.json();
         if (data.success && data.analysis) {
           setAnalysis(data.analysis);
-          setCrawlFeedback(`Archive scan complete: ${data.analysis.archiveAudit?.issuesProcessed || 78} issues verified.`);
+          setCrawlFeedback(`Archive scan complete: ${data.analysis.archiveAudit?.issuesProcessed ?? 0} issue records analyzed across ${data.analysis.yearlyData?.length ?? 0} years.`);
         } else {
-          setCrawlFeedback('Archive scan complete: verified 78 historical issues.');
+          setCrawlFeedback('Archive scan failed: the server returned no historical analysis.');
         }
       } else {
-        // Fallback to pre-validated benchmark
-        setCrawlFeedback('Archive verified: 78 issue records detected across 4 pages.');
+        const errorBody = await res.json().catch(() => null);
+        setCrawlFeedback(`Archive scan failed: ${errorBody?.error || 'the archive could not be analyzed.'}`);
       }
-    } catch {
-      setCrawlFeedback('Archive verified: 78 issue records detected across 4 pages.');
+    } catch (error) {
+      setCrawlFeedback(`Archive scan failed: ${error instanceof Error ? error.message : 'network error'}`);
     } finally {
       setIsCrawling(false);
       setTimeout(() => setCrawlFeedback(null), 5000);
@@ -265,7 +265,7 @@ export const JournalBehaviourMonitor: React.FC<JournalBehaviourMonitorProps> = (
             </span>
           ))}
 
-          {!isAnomaly && (
+          {!isAnomaly && archiveAudit?.issuesProcessed === archiveAudit?.issuesDetected && (
             <span className="px-3 py-1.5 rounded-xl bg-emerald-600 text-white font-bold text-xs flex items-center gap-1.5 shadow-2xs">
               <ShieldCheck className="w-4 h-4" />
               <span>Publication Volume Consistent With Baseline</span>
@@ -283,19 +283,19 @@ export const JournalBehaviourMonitor: React.FC<JournalBehaviourMonitorProps> = (
               <span>Archive Coverage Verified</span>
             </span>
             <span className="text-xs text-slate-300 font-mono">
-              <strong>{archiveAudit?.issuesDetected || 78}</strong> issue records found
+              <strong>{archiveAudit?.issuesDetected ?? 0}</strong> issue records found
             </span>
             <span className="text-xs text-slate-400">·</span>
             <span className="text-xs text-emerald-400 font-mono">
-              <strong>{archiveAudit?.issuesProcessed || 78}</strong> issues successfully processed
+              <strong>{archiveAudit?.issuesProcessed ?? 0}</strong> issues successfully processed
             </span>
             <span className="text-xs text-slate-400">·</span>
             <span className="text-xs text-purple-300 font-mono">
-              <strong>{archiveAudit?.totalArticlesCounted?.toLocaleString() || '2,795'}</strong> articles counted
+              <strong>{archiveAudit?.totalArticlesCounted?.toLocaleString() ?? 0}</strong> articles counted
             </span>
           </div>
           <p className="text-[11px] text-slate-400">
-            {archiveAudit?.statusMessage || 'Complete historical archive processed across all pagination pages with zero unaccessible issues.'}
+            {archiveAudit?.statusMessage || 'No archive crawl has been completed for this journal.'}
           </p>
         </div>
 
@@ -695,6 +695,10 @@ export const JournalBehaviourMonitor: React.FC<JournalBehaviourMonitorProps> = (
 
       {/* 7. TAB B: Year-by-Year Comparison Table */}
       {activeTab === 'table' && (
+        <div className="space-y-2">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            Historical archive comparison: issue and volume counts are taken from every detected archive record. Any year-on-year change is reviewed before a journal is considered consistent.
+          </p>
         <div className="overflow-x-auto rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-2xs">
           <table className="w-full text-left text-xs sm:text-sm">
             <thead className="bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-semibold border-b border-slate-200 dark:border-slate-700">
@@ -702,10 +706,11 @@ export const JournalBehaviourMonitor: React.FC<JournalBehaviourMonitorProps> = (
                 <th className="py-3 px-4">Year</th>
                 <th className="py-3 px-4 text-right">Issues</th>
                 <th className="py-3 px-4 text-right">Regular</th>
+                <th className="py-3 px-4 text-right">Volumes</th>
                 <th className="py-3 px-4 text-right">Special (S)</th>
                 <th className="py-3 px-4 text-right">Papers</th>
                 <th className="py-3 px-4 text-right">Papers / Issue</th>
-                <th className="py-3 px-4 text-right">YoY Change</th>
+                <th className="py-3 px-4 text-right">Issue YoY Change</th>
                 <th className="py-3 px-4 text-center">Status</th>
                 <th className="py-3 px-4 text-right">Auditable Action</th>
               </tr>
@@ -732,6 +737,9 @@ export const JournalBehaviourMonitor: React.FC<JournalBehaviourMonitorProps> = (
                   <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">
                     {row.regularIssues}
                   </td>
+                  <td className="py-3 px-4 text-right text-slate-600 dark:text-slate-400">
+                    {row.volumeCount ?? '—'}
+                  </td>
                   <td className="py-3 px-4 text-right text-amber-600 dark:text-amber-400 font-bold">
                     {row.specialIssues > 0 ? `${row.specialIssues}S` : '0'}
                   </td>
@@ -742,11 +750,11 @@ export const JournalBehaviourMonitor: React.FC<JournalBehaviourMonitorProps> = (
                     {row.papersPerIssue}
                   </td>
                   <td className="py-3 px-4 text-right">
-                    {row.pctChangeFromPrevYear === 0 ? (
+                    {(row.issuePctChangeFromPrevYear ?? row.pctChangeFromPrevYear) === 0 ? (
                       <span className="text-slate-400">—</span>
                     ) : (
-                      <span className={row.pctChangeFromPrevYear > 50 ? 'text-rose-600 font-bold' : row.pctChangeFromPrevYear > 20 ? 'text-amber-600' : 'text-slate-600 dark:text-slate-400'}>
-                        {row.pctChangeFromPrevYear >= 0 ? `+${row.pctChangeFromPrevYear}%` : `${row.pctChangeFromPrevYear}%`}
+                      <span className={(row.issuePctChangeFromPrevYear ?? row.pctChangeFromPrevYear) > 50 || (row.issuePctChangeFromPrevYear ?? row.pctChangeFromPrevYear) < -25 ? 'text-rose-600 font-bold' : (row.issuePctChangeFromPrevYear ?? row.pctChangeFromPrevYear) > 20 ? 'text-amber-600' : 'text-slate-600 dark:text-slate-400'}>
+                        {(row.issuePctChangeFromPrevYear ?? row.pctChangeFromPrevYear) >= 0 ? `+${row.issuePctChangeFromPrevYear ?? row.pctChangeFromPrevYear}%` : `${row.issuePctChangeFromPrevYear ?? row.pctChangeFromPrevYear}%`}
                       </span>
                     )}
                   </td>
@@ -781,6 +789,7 @@ export const JournalBehaviourMonitor: React.FC<JournalBehaviourMonitorProps> = (
               ))}
             </tbody>
           </table>
+        </div>
         </div>
       )}
 

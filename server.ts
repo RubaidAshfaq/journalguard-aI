@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { crawlJournalArchive } from './src/services/archiveCrawler';
 import { searchCallForPapers } from './src/services/cfpService';
+import { WOS_MASTER_JOURNAL_LIST, WOS_MASTER_LIST_METADATA } from './src/services/wosMasterJournalList';
 
 dotenv.config();
 
@@ -281,23 +282,17 @@ app.post('/api/wos/config', (req: Request, res: Response) => {
   });
 });
 
-// Curated authoritative Web of Science Master Journal List Core Collection verified registry
-const KNOWN_WOS_CORE_COLLECTION: Record<string, { collection: 'SCIE' | 'SSCI' | 'AHCI' | 'ESCI'; title: string; publisher: string }> = {
-  '2167-0811': { collection: 'SSCI', title: 'Digital Journalism', publisher: 'Routledge / Taylor & Francis' },
-  '0736-5853': { collection: 'SSCI', title: 'Telematics and Informatics', publisher: 'Elsevier' },
-  '1461-4448': { collection: 'SSCI', title: 'New Media & Society', publisher: 'SAGE Publications' },
-  '1083-6101': { collection: 'SSCI', title: 'Journal of Computer-Mediated Communication', publisher: 'Oxford University Press / ICA' },
-  '0951-5666': { collection: 'ESCI', title: 'AI & Society: Knowledge, Culture and Communication', publisher: 'Springer Nature' },
-  '1077-6990': { collection: 'SSCI', title: 'Journalism & Mass Communication Quarterly', publisher: 'SAGE Publications' },
-  '0001-0782': { collection: 'SCIE', title: 'Communications of the ACM', publisher: 'ACM' },
-  '1369-118X': { collection: 'SSCI', title: 'Information, Communication & Society', publisher: 'Routledge / Taylor & Francis' },
-  '0162-8828': { collection: 'SCIE', title: 'IEEE Transactions on Pattern Analysis and Machine Intelligence', publisher: 'IEEE' },
-  '0888-8892': { collection: 'SCIE', title: 'Conservation Biology', publisher: 'Wiley-Blackwell' },
-  '2589-7500': { collection: 'SCIE', title: 'The Lancet Digital Health', publisher: 'Elsevier' },
-  '0028-0836': { collection: 'SCIE', title: 'Nature', publisher: 'Springer Nature' },
-  '0036-8075': { collection: 'SCIE', title: 'Science', publisher: 'AAAS' },
-  '0747-5632': { collection: 'SSCI', title: 'Computers in Human Behavior', publisher: 'Elsevier' },
-};
+const KNOWN_WOS_CORE_COLLECTION = Object.fromEntries(
+  WOS_MASTER_JOURNAL_LIST.map(record => [record.issn, record]),
+);
+
+app.get('/api/wos/master-list', (_req: Request, res: Response) => {
+  res.json({
+    ...WOS_MASTER_LIST_METADATA,
+    registrySize: WOS_MASTER_JOURNAL_LIST.length,
+    registryScope: 'Application-verified records only; not the complete Clarivate export.',
+  });
+});
 
 // Endpoint: Verify journal via Web of Science Master Journal List
 app.get('/api/wos/verify', async (req: Request, res: Response) => {

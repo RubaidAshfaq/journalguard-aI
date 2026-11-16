@@ -1424,6 +1424,30 @@ async function searchCallForPapers(query, profile) {
   return matchedResults.sort((a, b) => b.matchScore - a.matchScore);
 }
 
+// src/services/wosMasterJournalList.ts
+var WOS_MASTER_LIST_METADATA = {
+  sourceName: "Clarivate Web of Science Master Journal List",
+  sourceUrl: "https://mjl.clarivate.com/mjl/collection-list-downloads",
+  lastUpdated: "2026-10-19",
+  accessNote: "Collection downloads require a free Master Journal List login."
+};
+var WOS_MASTER_JOURNAL_LIST = [
+  { collection: "SSCI", title: "Digital Journalism", publisher: "Routledge / Taylor & Francis", issn: "2167-0811" },
+  { collection: "SSCI", title: "Telematics and Informatics", publisher: "Elsevier", issn: "0736-5853" },
+  { collection: "SSCI", title: "New Media & Society", publisher: "SAGE Publications", issn: "1461-4448" },
+  { collection: "SSCI", title: "Journal of Computer-Mediated Communication", publisher: "Oxford University Press / ICA", issn: "1083-6101" },
+  { collection: "ESCI", title: "AI & Society: Knowledge, Culture and Communication", publisher: "Springer Nature", issn: "0951-5666" },
+  { collection: "SSCI", title: "Journalism & Mass Communication Quarterly", publisher: "SAGE Publications", issn: "1077-6990" },
+  { collection: "SCIE", title: "Communications of the ACM", publisher: "ACM", issn: "0001-0782" },
+  { collection: "SSCI", title: "Information, Communication & Society", publisher: "Routledge / Taylor & Francis", issn: "1369-118X" },
+  { collection: "SCIE", title: "IEEE Transactions on Pattern Analysis and Machine Intelligence", publisher: "IEEE", issn: "0162-8828" },
+  { collection: "SCIE", title: "Conservation Biology", publisher: "Wiley-Blackwell", issn: "0888-8892" },
+  { collection: "SCIE", title: "The Lancet Digital Health", publisher: "Elsevier", issn: "2589-7500" },
+  { collection: "SCIE", title: "Nature", publisher: "Springer Nature", issn: "0028-0836" },
+  { collection: "SCIE", title: "Science", publisher: "AAAS", issn: "0036-8075" },
+  { collection: "SSCI", title: "Computers in Human Behavior", publisher: "Elsevier", issn: "0747-5632" }
+];
+
 // server.ts
 dotenv.config();
 var __filename = fileURLToPath(import.meta.url);
@@ -1644,22 +1668,16 @@ app.post("/api/wos/config", (req, res) => {
     message: wosConfig.apiKey ? "Web of Science configuration saved securely on server." : "Web of Science key cleared."
   });
 });
-var KNOWN_WOS_CORE_COLLECTION = {
-  "2167-0811": { collection: "SSCI", title: "Digital Journalism", publisher: "Routledge / Taylor & Francis" },
-  "0736-5853": { collection: "SSCI", title: "Telematics and Informatics", publisher: "Elsevier" },
-  "1461-4448": { collection: "SSCI", title: "New Media & Society", publisher: "SAGE Publications" },
-  "1083-6101": { collection: "SSCI", title: "Journal of Computer-Mediated Communication", publisher: "Oxford University Press / ICA" },
-  "0951-5666": { collection: "ESCI", title: "AI & Society: Knowledge, Culture and Communication", publisher: "Springer Nature" },
-  "1077-6990": { collection: "SSCI", title: "Journalism & Mass Communication Quarterly", publisher: "SAGE Publications" },
-  "0001-0782": { collection: "SCIE", title: "Communications of the ACM", publisher: "ACM" },
-  "1369-118X": { collection: "SSCI", title: "Information, Communication & Society", publisher: "Routledge / Taylor & Francis" },
-  "0162-8828": { collection: "SCIE", title: "IEEE Transactions on Pattern Analysis and Machine Intelligence", publisher: "IEEE" },
-  "0888-8892": { collection: "SCIE", title: "Conservation Biology", publisher: "Wiley-Blackwell" },
-  "2589-7500": { collection: "SCIE", title: "The Lancet Digital Health", publisher: "Elsevier" },
-  "0028-0836": { collection: "SCIE", title: "Nature", publisher: "Springer Nature" },
-  "0036-8075": { collection: "SCIE", title: "Science", publisher: "AAAS" },
-  "0747-5632": { collection: "SSCI", title: "Computers in Human Behavior", publisher: "Elsevier" }
-};
+var KNOWN_WOS_CORE_COLLECTION = Object.fromEntries(
+  WOS_MASTER_JOURNAL_LIST.map((record) => [record.issn, record])
+);
+app.get("/api/wos/master-list", (_req, res) => {
+  res.json({
+    ...WOS_MASTER_LIST_METADATA,
+    registrySize: WOS_MASTER_JOURNAL_LIST.length,
+    registryScope: "Application-verified records only; not the complete Clarivate export."
+  });
+});
 app.get("/api/wos/verify", async (req, res) => {
   const { query, issn } = req.query;
   const cleanIssn = String(issn || "").toUpperCase().trim();

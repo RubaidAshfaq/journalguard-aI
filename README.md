@@ -156,6 +156,15 @@ The platform is designed to make the initial verification process **faster, clea
 
 # 🟢 Risk Signal Framework
 
+## Web of Science source currency
+
+The Web of Science verification registry is aligned with the Clarivate Master
+Journal List collection downloads page, last updated **19 October 2026**. The
+official collection files require a Master Journal List login, so this project
+keeps only application-verified records locally and does not republish the
+restricted full export. Use the source link in the Web of Science view to
+confirm a journal's current status before submission.
+
 Shodh Setu AI can present verification signals using an intuitive risk-oriented framework:
 
 | Signal | Interpretation |

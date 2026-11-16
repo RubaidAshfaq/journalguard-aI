@@ -113,11 +113,11 @@ export function parseIssueMetadata(title: string): { volume?: string; issueNumbe
   const year = yearMatch ? parseInt(yearMatch[1], 10) : new Date().getFullYear();
 
   // Extract volume
-  const volMatch = clean.match(/vol\.?\s*([0-9a-z]+)/i);
+  const volMatch = clean.match(/(?:vol(?:ume)?\.?\s*\.?\s*|volume\s+)([0-9a-z]+)/i);
   const volume = volMatch ? volMatch[1] : undefined;
 
   // Extract issue number (e.g. No. 8S, No. 2, Issue 1, 1S)
-  const issMatch = clean.match(/(?:no\.?|issue)\s*([0-9a-z]+)/i);
+  const issMatch = clean.match(/(?:no\.?|issue)\s*([0-9]+(?:\.[0-9]+)?[a-z]?)/i);
   const issueNumber = issMatch ? issMatch[1] : undefined;
 
   return { volume, issueNumber, year };
@@ -510,6 +510,7 @@ export function buildPublicationBehaviourFromIssues(
   // 1. Group issues by year
   const yearsMap: { [year: number]: {
     issues: number;
+    volumes: Set<string>;
     regularIssues: number;
     specialIssues: number;
     supplements: number;
@@ -522,6 +523,7 @@ export function buildPublicationBehaviourFromIssues(
     if (!yearsMap[yr]) {
       yearsMap[yr] = {
         issues: 0,
+        volumes: new Set<string>(),
         regularIssues: 0,
         specialIssues: 0,
         supplements: 0,
@@ -530,6 +532,7 @@ export function buildPublicationBehaviourFromIssues(
       };
     }
     yearsMap[yr].issues += 1;
+    if (iss.volume) yearsMap[yr].volumes.add(iss.volume);
     if (iss.issueType === 'Special') {
       yearsMap[yr].specialIssues += 1;
     } else if (iss.issueType === 'Supplement') {
@@ -547,19 +550,23 @@ export function buildPublicationBehaviourFromIssues(
   const yearsToProcess = relevantYears.length >= 3 ? relevantYears : allYearsSorted.slice(-6);
 
   let prevPapers = 0;
+  let prevIssues = 0;
   const yearlyData: AnnualPublicationRecord[] = yearsToProcess.map(yr => {
-    const data = yearsMap[yr] || { issues: 0, regularIssues: 0, specialIssues: 0, supplements: 0, papers: 0, issueList: [] };
+    const data = yearsMap[yr] || { issues: 0, volumes: new Set<string>(), regularIssues: 0, specialIssues: 0, supplements: 0, papers: 0, issueList: [] };
     const papersPerIssue = data.issues > 0 ? Math.round((data.papers / data.issues) * 10) / 10 : 0;
     const pctChange = prevPapers > 0 ? Math.round(((data.papers - prevPapers) / prevPapers) * 100) : 0;
+    const issuePctChange = prevIssues > 0 ? Math.round(((data.issues - prevIssues) / prevIssues) * 100) : 0;
     prevPapers = data.papers;
+    prevIssues = data.issues;
 
     let status: AnnualPublicationRecord['status'] = 'Normal';
-    if (pctChange >= 150) status = 'Major Anomaly';
-    else if (pctChange >= 75) status = 'Significant Increase';
-    else if (pctChange >= 30) status = 'Moderate Increase';
-    else if (pctChange <= -25) status = 'Decline';
+    const dominantChange = Math.max(Math.abs(pctChange), Math.abs(issuePctChange));
+    if (dominantChange >= 150) status = 'Major Anomaly';
+    else if (dominantChange >= 75) status = issuePctChange < 0 ? 'Decline' : 'Significant Increase';
+    else if (dominantChange >= 30) status = issuePctChange < 0 ? 'Decline' : 'Moderate Increase';
 
     let notes: string | undefined = undefined;
+    const volumeCount = data.volumes.size;
     if (data.specialIssues > 0 && yr === 2026) {
       notes = `Surge of ${data.specialIssues} special issues (${data.regularIssues} regular + ${data.specialIssues} special)`;
     } else if (yr === 2026) {
@@ -569,12 +576,15 @@ export function buildPublicationBehaviourFromIssues(
     return {
       year: yr,
       issues: data.issues,
+      volumeCount,
+      volumes: [...data.volumes].sort(),
       papers: data.papers,
       papersPerIssue,
       regularIssues: data.regularIssues,
       specialIssues: data.specialIssues,
       supplements: data.supplements,
       pctChangeFromPrevYear: pctChange,
+      issuePctChangeFromPrevYear: issuePctChange,
       status,
       notes,
       issueList: data.issueList,
@@ -643,31 +653,89 @@ export function buildPublicationBehaviourFromIssues(
   const flagLabels: PublicationBehaviourAnalysis['flagLabels'] = [];
   const explanations: VolumeAnomalyExplanation[] = [];
 
-  const maxGrowth = Math.max(pctIncreaseTotalPapers, pctIncreaseIssues, pctIncreasePapersPerIssue);
+  const previousRecord = yearlyData.length > 1 ? yearlyData[yearlyData.length - 2] : undefined;
+  const issueChangeFromPrevious = previousRecord && previousRecord.issues > 0
+    ? Math.round(((currentRecord.issues - previousRecord.issues) / previousRecord.issues) * 100)
+    : 0;
+  const volumeChangeFromPrevious = previousRecord
+    ? (currentRecord.volumeCount || 0) - (previousRecord.volumeCount || 0)
+    : 0;
+  const issuePattern = baselineRecords.map(record => record.issues);
+  const historicalMode = issuePattern.length > 0
+    ? issuePattern.sort((a, b) => issuePattern.filter(value => value === b).length - issuePattern.filter(value => value === a).length)[0]
+    : 0;
+  const hasFrequencyShift = Boolean(previousRecord && (
+    Math.abs(currentRecord.issues - previousRecord.issues) >= 2 ||
+    Math.abs(issueChangeFromPrevious) >= 50 ||
+    (currentRecord.issues >= 6 && previousRecord.issues <= 3)
+  ));
+  const hasVolumeShift = Boolean(previousRecord && volumeChangeFromPrevious !== 0);
+  const hasIrregularPattern = Boolean(
+    previousRecord &&
+    issuePattern.length >= 3 &&
+    currentRecord.issues !== historicalMode &&
+    Math.abs(currentRecord.issues - historicalMode) >= 2
+  );
+  const maxGrowth = Math.max(pctIncreaseTotalPapers, pctIncreaseIssues, pctIncreasePapersPerIssue, issueChangeFromPrevious);
+  const maxAbsoluteIssueChange = Math.max(Math.abs(pctIncreaseIssues), Math.abs(issueChangeFromPrevious));
 
-  if (maxGrowth >= 250 || pctIncreaseTotalPapers >= 250 || (pctIncreaseIssues >= 150 && currentRecord.specialIssues >= 4)) {
+  if (maxGrowth >= 250 || pctIncreaseTotalPapers >= 250 || (pctIncreaseIssues >= 150 && currentRecord.specialIssues >= 4) || (hasFrequencyShift && currentRecord.issues >= 6 && (previousRecord?.issues || 0) <= 2)) {
     anomalyTier = 'MAJOR_VOLUME_ANOMALY';
     flagLabels.push({
       severity: 'critical',
       label: '🚨 Major Publication Volume Anomaly'
     });
-  } else if (maxGrowth >= 120 || pctIncreaseTotalPapers >= 120 || pctIncreaseIssues >= 100) {
+  } else if (maxGrowth >= 120 || pctIncreaseTotalPapers >= 120 || pctIncreaseIssues >= 100 || maxAbsoluteIssueChange >= 100 || hasIrregularPattern) {
     anomalyTier = 'UNUSUAL_PATTERN';
     flagLabels.push({
       severity: 'red',
       label: '🔴 Unusual Publication Pattern'
     });
-  } else if (maxGrowth >= 60 || pctIncreaseTotalPapers >= 60 || pctIncreaseIssues >= 50) {
+  } else if (maxGrowth >= 60 || pctIncreaseTotalPapers >= 60 || pctIncreaseIssues >= 50 || maxAbsoluteIssueChange >= 50 || hasVolumeShift) {
     anomalyTier = 'SIGNIFICANT_GROWTH';
     flagLabels.push({
       severity: 'orange',
       label: '🟠 Significant Publication Growth'
     });
-  } else if (maxGrowth >= 30 || pctIncreaseTotalPapers >= 30 || pctIncreaseIssues >= 25) {
+  } else if (maxGrowth >= 30 || pctIncreaseTotalPapers >= 30 || pctIncreaseIssues >= 30 || hasFrequencyShift) {
     anomalyTier = 'PUBLICATION_INCREASE';
     flagLabels.push({
       severity: 'yellow',
       label: '🟡 Publication Increase'
+    });
+  }
+
+  if (hasFrequencyShift) {
+    const direction = currentRecord.issues > (previousRecord?.issues || 0) ? 'increase' : 'decrease';
+    explanations.push({
+      type: 'ISSUE_FREQUENCY',
+      title: `Year-on-Year Issue Frequency ${direction === 'increase' ? 'Increase' : 'Decrease'}`,
+      description: `The archive lists ${currentRecord.issues} issues in ${currentRecord.year} versus ${previousRecord?.issues} in ${previousRecord?.year} (${issueChangeFromPrevious >= 0 ? '+' : ''}${issueChangeFromPrevious}%). This requires manual review.`,
+      historicalBaselineText: `${previousRecord?.issues} issues in ${previousRecord?.year}`,
+      currentValueText: `${currentRecord.issues} issues in ${currentRecord.year}`,
+      percentageChange: issueChangeFromPrevious,
+    });
+  }
+
+  if (hasVolumeShift) {
+    explanations.push({
+      type: 'VOLUME_FREQUENCY',
+      title: 'Annual Volume Count Changed',
+      description: `The archive shows ${currentRecord.volumeCount || 0} volume${currentRecord.volumeCount === 1 ? '' : 's'} in ${currentRecord.year} versus ${previousRecord?.volumeCount || 0} in ${previousRecord?.year}.`,
+      historicalBaselineText: `${previousRecord?.volumeCount || 0} volumes in ${previousRecord?.year}`,
+      currentValueText: `${currentRecord.volumeCount || 0} volumes in ${currentRecord.year}`,
+      percentageChange: volumeChangeFromPrevious,
+    });
+  }
+
+  if (hasIrregularPattern) {
+    explanations.push({
+      type: 'IRREGULAR_PATTERN',
+      title: 'Irregular Publication Pattern',
+      description: `The current year has ${currentRecord.issues} issues, while the most common historical pattern was ${historicalMode} issues per year. The archive should be reviewed for a newly introduced frequency.`,
+      historicalBaselineText: `${historicalMode} issues/year was the historical mode`,
+      currentValueText: `${currentRecord.issues} issues in ${currentRecord.year}`,
+      percentageChange: historicalMode > 0 ? Math.round(((currentRecord.issues - historicalMode) / historicalMode) * 100) : 0,
     });
   }
 
@@ -768,6 +836,45 @@ export function buildPublicationBehaviourFromIssues(
 /**
  * Live crawl of an arbitrary journal archive URL
  */
+function decodeHtml(value: string): string {
+  return value
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function extractArchiveIssues(html: string, pageUrl: string): Array<{ title: string; url: string }> {
+  const found = new Map<string, { title: string; url: string }>();
+  const add = (href: string, rawTitle: string, surroundingText = '') => {
+    const url = new URL(href, pageUrl).toString();
+    const title = decodeHtml(`${surroundingText} ${rawTitle}`);
+    if (!title || !/(19\d{2}|20\d{2})|vol(?:ume)?\.?|issue|no\./i.test(title)) return;
+    if (!found.has(url)) found.set(url, { url, title });
+  };
+
+  // Handles custom archives such as lettersinbiomath.org/archive.php where the
+  // year is outside the issue link and the issue link is /volume-view.php.
+  const detailRegex = /<div[^>]*class=["'][^"']*meta__details[^"']*["'][^>]*>([\s\S]*?)<\/div>/gi;
+  let detailMatch: RegExpExecArray | null;
+  while ((detailMatch = detailRegex.exec(html)) !== null) {
+    const linkMatch = detailMatch[1].match(/<a[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/i);
+    if (linkMatch) add(linkMatch[1], linkMatch[2], detailMatch[1]);
+  }
+
+  // OJS and other archive implementations with issue links in arbitrary markup.
+  const anchorRegex = /<a[^>]*href=["']([^"']*(?:issue\/view|volume-view\.php|issue|volume)[^"']*)["'][^>]*>([\s\S]*?)<\/a>/gi;
+  let anchorMatch: RegExpExecArray | null;
+  while ((anchorMatch = anchorRegex.exec(html)) !== null) {
+    add(anchorMatch[1], anchorMatch[2]);
+  }
+
+  return [...found.values()];
+}
+
 export async function crawlJournalArchive(archiveUrl: string): Promise<PublicationBehaviourAnalysis> {
   // If matching the test case URL (aejournals.org), use the comprehensive verified crawl
   if (archiveUrl.includes('aejournals.org') || archiveUrl.includes('AEJ/issue/archive')) {
@@ -799,19 +906,16 @@ export async function crawlJournalArchive(archiveUrl: string): Promise<Publicati
       const htmlText: string = await fetchResponse.text();
 
       // Extract issue links & titles
-      const issueRegex = /<h2[^>]*>\s*<a[^>]*class=\"title\"[^>]*href=\"([^\"]+)\"[^>]*>([\s\S]*?)<\/a>/gi;
-      let m: RegExpExecArray | null;
-      while ((m = issueRegex.exec(htmlText)) !== null) {
-        detectedIssues.push({
-          url: m[1],
-          title: m[2].trim().replace(/\s+/g, ' '),
-        });
-      }
+      detectedIssues.push(...extractArchiveIssues(htmlText, currentUrl));
 
       // Check next page pagination
       const nextMatch: RegExpMatchArray | null = htmlText.match(/<a[^>]*class=\"next\"[^>]*href=\"([^\"]+)\"/i);
-      currentUrl = nextMatch ? nextMatch[1] : null;
+      currentUrl = nextMatch ? new URL(nextMatch[1], currentUrl).toString() : null;
     }
+
+    const uniqueIssues = [...new Map(detectedIssues.map(issue => [issue.url, issue])).values()];
+    detectedIssues.length = 0;
+    detectedIssues.push(...uniqueIssues);
 
     if (detectedIssues.length === 0) {
       throw new Error('No issue archives detected at specified URL');
@@ -832,12 +936,23 @@ export async function crawlJournalArchive(archiveUrl: string): Promise<Publicati
             const res: globalThis.Response = await fetch(iss.url, {
               headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Shodh Setu AI/1.0' },
             });
-            if (!res.ok) {
-              return null;
-            }
-            const issueHtml: string = await res.text();
             const { volume, issueNumber, year } = parseIssueMetadata(iss.title);
             const issueType = classifyIssueType(iss.title, issueNumber);
+            if (!res.ok) {
+              return {
+                id: `iss-${issueNumber || i}`,
+                issueTitle: iss.title,
+                volume,
+                issueNumber,
+                issueType,
+                year,
+                articlesCount: 0,
+                url: iss.url,
+                source: `Issue archive link (issue page unavailable): ${iss.url}`,
+                articles: [],
+              };
+            }
+            const issueHtml: string = await res.text();
 
             // Extract articles
             const artRegex = /<h3[^>]*class=\"title\"[^>]*>\s*<a[^>]*href=\"([^\"]*\/article\/view\/(\d+)[^\"]*)\"[^>]*>([\s\S]*?)<\/a>/gi;
@@ -884,7 +999,19 @@ export async function crawlJournalArchive(archiveUrl: string): Promise<Publicati
               articles: issueArticles,
             };
           } catch {
-            return null;
+            const { volume, issueNumber, year } = parseIssueMetadata(iss.title);
+            return {
+              id: `iss-${issueNumber || i}`,
+              issueTitle: iss.title,
+              volume,
+              issueNumber,
+              issueType: classifyIssueType(iss.title, issueNumber),
+              year,
+              articlesCount: 0,
+              url: iss.url,
+              source: `Issue archive link (issue page failed): ${iss.url}`,
+              articles: [],
+            };
           }
         })
       );
@@ -917,14 +1044,7 @@ export async function crawlJournalArchive(archiveUrl: string): Promise<Publicati
       processedIssues,
       coverage
     );
-  } catch {
-    // If live crawl encounters connection errors or CORS in browser, fallback to benchmark analysis
-    return buildPublicationBehaviourFromIssues(
-      AEJOURNALS_PREVALIDATED_ARCHIVE.journalTitle,
-      AEJOURNALS_PREVALIDATED_ARCHIVE.issn,
-      AEJOURNALS_PREVALIDATED_ARCHIVE.publisher,
-      AEJOURNALS_PREVALIDATED_ARCHIVE.issues,
-      AEJOURNALS_PREVALIDATED_ARCHIVE.coverage
-    );
+  } catch (error) {
+    throw new Error(`Archive crawl failed for ${archiveUrl}: ${error instanceof Error ? error.message : 'unknown error'}`);
   }
 }

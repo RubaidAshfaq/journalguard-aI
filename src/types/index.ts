@@ -317,7 +317,7 @@ export type VolumeAnomalyTier =
   | 'MAJOR_VOLUME_ANOMALY';       // 🚨
 
 export interface VolumeAnomalyExplanation {
-  type: 'ISSUE_FREQUENCY' | 'PAPERS_PER_ISSUE' | 'ANNUAL_VOLUME' | 'SPECIAL_ISSUE_SURGE';
+  type: 'ISSUE_FREQUENCY' | 'PAPERS_PER_ISSUE' | 'ANNUAL_VOLUME' | 'SPECIAL_ISSUE_SURGE' | 'VOLUME_FREQUENCY' | 'IRREGULAR_PATTERN';
   title: string;
   description: string;
   historicalBaselineText: string;
@@ -364,6 +364,8 @@ export interface ArchiveAuditCoverage {
 export interface AnnualPublicationRecord {
   year: number;
   issues: number;
+  volumeCount?: number;
+  volumes?: string[];
   papers: number;
   papersPerIssue: number;
   regularIssues: number;
@@ -372,6 +374,7 @@ export interface AnnualPublicationRecord {
   continuousPublication?: boolean;
   onlineFirstCount?: number;
   pctChangeFromPrevYear: number;
+  issuePctChangeFromPrevYear?: number;
   status: 'Normal' | 'Moderate Increase' | 'Significant Increase' | 'Major Anomaly' | 'Decline';
   notes?: string;
   issueList?: IssueDrillDownItem[];
