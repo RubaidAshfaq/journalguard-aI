@@ -397,6 +397,26 @@ WOS_API_KEY
 
 should be configured securely through the deployment environment and **must never be committed to the repository**.
 
+Optional research discovery integrations use these additional server-side variables:
+
+```text
+CORE_API_KEY
+DATACITE_API_KEY
+OSF_API_TOKEN
+SHARE_OSF_API_TOKEN
+SOFYA_MCP_URL
+SOFYA_MCP_API_KEY
+```
+
+The application exposes:
+
+```text
+GET /api/research/status
+GET /api/research/search?source=core|datacite|osf|share_osf|holisticcare&query=...
+```
+
+DataCite, OSF, SHARE OSF, and The Holistic Care provide public read access. CORE registered access uses `CORE_API_KEY`. Sofya is an MCP server rather than a REST search API; configure `SOFYA_MCP_URL` for an MCP-capable client.
+
 ---
 
 # 📌 Current Status

@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 import { crawlJournalArchive } from './src/services/archiveCrawler';
 import { searchCallForPapers } from './src/services/cfpService';
 import { WOS_MASTER_JOURNAL_LIST, WOS_MASTER_LIST_METADATA } from './src/services/wosMasterJournalList';
+import { getResearchApiStatus, searchResearchApi, ResearchApiSource } from './src/services/researchApiService';
 
 dotenv.config();
 
@@ -390,6 +391,34 @@ app.get('/api/diagnostics', (_req: Request, res: Response) => {
     cfpsVerifiedCount: apiDiagnostics.cfpsVerifiedCount,
     cfpsRejectedCount: apiDiagnostics.cfpsRejectedCount,
   });
+});
+
+app.get('/api/research/status', (_req: Request, res: Response) => {
+  res.json({ success: true, sources: getResearchApiStatus() });
+});
+
+app.get('/api/research/search', async (req: Request, res: Response) => {
+  const source = String(req.query.source || '') as ResearchApiSource;
+  const query = String(req.query.query || '').trim();
+  const validSources: ResearchApiSource[] = ['sofya_mcp', 'holisticcare', 'core', 'datacite', 'osf', 'share_osf'];
+  if (!validSources.includes(source)) {
+    res.status(400).json({ success: false, error: 'Unsupported research API source.' });
+    return;
+  }
+  if (!query && source !== 'share_osf') {
+    res.status(400).json({ success: false, error: 'A search query is required.' });
+    return;
+  }
+  try {
+    const results = await searchResearchApi(source, query);
+    res.json({ success: true, source, count: results.length, results });
+  } catch (error: any) {
+    res.status(502).json({
+      success: false,
+      source,
+      error: error?.message || 'Research API request failed.',
+    });
+  }
 });
 
 // Endpoint: Search Call for Papers (CfP) Discovery Engine

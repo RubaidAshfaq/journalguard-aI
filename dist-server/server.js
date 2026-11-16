@@ -1536,6 +1536,118 @@ var WOS_MASTER_JOURNAL_LIST = [
   { collection: "SSCI", title: "Computers in Human Behavior", publisher: "Elsevier", issn: "0747-5632" }
 ];
 
+// src/services/researchApiService.ts
+var configs = {
+  sofya_mcp: {
+    key: process.env.SOFYA_MCP_API_KEY,
+    baseUrl: process.env.SOFYA_MCP_URL || "",
+    configured: Boolean(process.env.SOFYA_MCP_URL)
+  },
+  holisticcare: {
+    key: process.env.HOLISTICCARE_API_KEY,
+    baseUrl: process.env.HOLISTICCARE_API_URL || "https://api.theholisticcare.com/v1",
+    configured: true
+  },
+  core: {
+    key: process.env.CORE_API_KEY,
+    baseUrl: process.env.CORE_API_URL || "https://api.core.ac.uk/v3",
+    configured: Boolean(process.env.CORE_API_KEY)
+  },
+  datacite: {
+    key: process.env.DATACITE_API_KEY,
+    baseUrl: process.env.DATACITE_API_URL || "https://api.datacite.org",
+    configured: true
+  },
+  osf: {
+    key: process.env.OSF_API_TOKEN,
+    baseUrl: process.env.OSF_API_URL || "https://api.osf.io/v2",
+    configured: true
+  },
+  share_osf: {
+    key: process.env.SHARE_OSF_API_TOKEN,
+    baseUrl: process.env.SHARE_OSF_API_URL || "https://share.osf.io/api/v2",
+    configured: true
+  }
+};
+function getResearchApiStatus() {
+  return {
+    sofya_mcp: { configured: configs.sofya_mcp.configured, authentication: "mcp" },
+    holisticcare: { configured: true, authentication: "optional" },
+    core: { configured: configs.core.configured, authentication: "required" },
+    datacite: { configured: true, authentication: "optional" },
+    osf: { configured: true, authentication: "optional" },
+    share_osf: { configured: true, authentication: "optional" }
+  };
+}
+function headers(config) {
+  return {
+    Accept: "application/json",
+    ...config.key ? { Authorization: `Bearer ${config.key}` } : {}
+  };
+}
+function asArray(value) {
+  if (Array.isArray(value)) return value;
+  if (Array.isArray(value?.data)) return value.data;
+  if (Array.isArray(value?.results)) return value.results;
+  if (Array.isArray(value?.records)) return value.records;
+  return [];
+}
+function normalize(source, item) {
+  const attributes = item?.attributes || item;
+  const title = attributes?.title || attributes?.titles?.[0]?.title || attributes?.name;
+  if (!title || typeof title !== "string") return null;
+  const creators = attributes?.creators || attributes?.authors || [];
+  const authors = Array.isArray(creators) ? creators.map((creator) => creator?.name || creator?.family || creator?.given).filter(Boolean).join(", ") : void 0;
+  return {
+    source,
+    title: title.trim(),
+    description: attributes?.description || attributes?.descriptions?.[0]?.description || attributes?.abstract || attributes?.summary,
+    authors,
+    year: Number(attributes?.publication_year || attributes?.published || attributes?.date_created || 0) || void 0,
+    doi: attributes?.doi || attributes?.identifiers?.doi,
+    url: attributes?.url || attributes?.links?.html || attributes?.links?.self,
+    rawId: item?.id || attributes?.id
+  };
+}
+async function searchResearchApi(source, query) {
+  const config = configs[source];
+  if (!config.configured && source !== "holisticcare" && source !== "datacite") {
+    throw new Error(`${source} is not configured on the server.`);
+  }
+  if (source === "sofya_mcp") {
+    throw new Error("Sofya MCP is a tool server, not a REST search endpoint. Configure its MCP URL for an MCP client connection.");
+  }
+  const params = new URLSearchParams();
+  let endpoint = config.baseUrl;
+  if (source === "holisticcare") {
+    endpoint += "/resources";
+    params.set("q", query);
+    params.set("limit", "10");
+  } else if (source === "core") {
+    endpoint += "/search/works";
+    params.set("q", query);
+    params.set("limit", "10");
+  } else if (source === "datacite") {
+    endpoint += "/dois";
+    params.set("query", query);
+    params.set("page[size]", "10");
+  } else if (source === "osf") {
+    endpoint += "/nodes/";
+    params.set("filter[title]", query);
+    params.set("page[size]", "10");
+  } else {
+    endpoint += "/sources/";
+    params.set("page[size]", "10");
+  }
+  const response = await fetch(`${endpoint}?${params.toString()}`, {
+    headers: headers(config),
+    signal: AbortSignal.timeout(12e3)
+  });
+  if (!response.ok) throw new Error(`${source} returned HTTP ${response.status}.`);
+  const payload = await response.json();
+  return asArray(payload).map((item) => normalize(source, item)).filter((item) => Boolean(item));
+}
+
 // server.ts
 dotenv.config();
 var __filename = fileURLToPath(import.meta.url);
@@ -1846,6 +1958,32 @@ app.get("/api/diagnostics", (_req, res) => {
     cfpsVerifiedCount: apiDiagnostics.cfpsVerifiedCount,
     cfpsRejectedCount: apiDiagnostics.cfpsRejectedCount
   });
+});
+app.get("/api/research/status", (_req, res) => {
+  res.json({ success: true, sources: getResearchApiStatus() });
+});
+app.get("/api/research/search", async (req, res) => {
+  const source = String(req.query.source || "");
+  const query = String(req.query.query || "").trim();
+  const validSources = ["sofya_mcp", "holisticcare", "core", "datacite", "osf", "share_osf"];
+  if (!validSources.includes(source)) {
+    res.status(400).json({ success: false, error: "Unsupported research API source." });
+    return;
+  }
+  if (!query && source !== "share_osf") {
+    res.status(400).json({ success: false, error: "A search query is required." });
+    return;
+  }
+  try {
+    const results = await searchResearchApi(source, query);
+    res.json({ success: true, source, count: results.length, results });
+  } catch (error) {
+    res.status(502).json({
+      success: false,
+      source,
+      error: error?.message || "Research API request failed."
+    });
+  }
 });
 app.post("/api/cfp/search", async (req, res) => {
   try {
