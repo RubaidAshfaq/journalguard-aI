@@ -8,7 +8,7 @@
  * - Clarivate Master Journal List (MJL) integrity check
  */
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { 
   Search, 
   ExternalLink, 
@@ -17,7 +17,9 @@ import {
   Building, 
   ShieldCheck, 
   RefreshCw,
-  BookOpen
+  BookOpen,
+  Globe2,
+  AlertTriangle
 } from 'lucide-react';
 import { IntelligenceJournal, WosCoreCollectionType } from '../../types';
 import { getStoredIntelligenceJournals } from '../../services/researchIntelligenceService';
@@ -36,8 +38,18 @@ export const WosJournalView: React.FC<WosJournalViewProps> = ({
   const [selectedCollection, setSelectedCollection] = useState<string>('all');
   const [isProxyTesting, setIsProxyTesting] = useState<boolean>(false);
   const [proxyStatus, setProxyStatus] = useState<string | null>(null);
+  const [allJournals, setAllJournals] = useState<IntelligenceJournal[]>(() => getStoredIntelligenceJournals());
+  const [crossCheckState, setCrossCheckState] = useState<Record<string, {
+    status: 'checking' | 'matched' | 'mismatch' | 'unavailable';
+    message: string;
+    details?: string[];
+  }>>({});
 
-  const allJournals = useMemo(() => getStoredIntelligenceJournals(), []);
+  useEffect(() => {
+    const refreshJournals = () => setAllJournals(getStoredIntelligenceJournals());
+    window.addEventListener('shodhsetu_intel_journals_updated', refreshJournals);
+    return () => window.removeEventListener('shodhsetu_intel_journals_updated', refreshJournals);
+  }, []);
 
   // Compute live WoS collection counts across the catalog
   const counts = useMemo(() => {
@@ -89,6 +101,80 @@ export const WosJournalView: React.FC<WosJournalViewProps> = ({
       setProxyStatus('WoS registry active (validated local database)');
     } finally {
       setIsProxyTesting(false);
+    }
+  };
+
+  const normalizeValue = (value: string | undefined): string =>
+    (value || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+
+  const findScopusRecord = (journal: IntelligenceJournal): IntelligenceJournal | undefined => {
+    const identifiers = [journal.issn, journal.eIssn].map(normalizeValue).filter(Boolean);
+    return allJournals.find(candidate => {
+      if (!candidate.scopusIndexed) return false;
+      const candidateIdentifiers = [candidate.issn, candidate.eIssn].map(normalizeValue);
+      return identifiers.some(identifier => candidateIdentifiers.includes(identifier)) ||
+        normalizeValue(candidate.title) === normalizeValue(journal.title);
+    });
+  };
+
+  const handleCrossCheck = async (journal: IntelligenceJournal) => {
+    const scopusRecord = findScopusRecord(journal);
+    const website = scopusRecord?.website || journal.website || scopusRecord?.canonicalUrl || journal.canonicalUrl;
+    setCrossCheckState(previous => ({
+      ...previous,
+      [journal.id]: { status: 'checking', message: 'Comparing uploaded Scopus metadata and publisher website...' },
+    }));
+
+    if (!scopusRecord) {
+      setCrossCheckState(previous => ({
+        ...previous,
+        [journal.id]: { status: 'unavailable', message: 'No matching record found in the uploaded Scopus database.' },
+      }));
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/journal/cross-check', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          website,
+          expected: {
+            title: scopusRecord.title,
+            publisher: scopusRecord.publisher,
+            issn: scopusRecord.issn,
+            eIssn: scopusRecord.eIssn,
+          },
+        }),
+      });
+      const data = await response.json().catch(() => null);
+      if (!response.ok || !data?.success) {
+        throw new Error(data?.error || 'Publisher website verification failed.');
+      }
+
+      const details: string[] = [];
+      if (data.comparison?.title?.matched === false) details.push(`Title mismatch: ${data.comparison.title.actual || 'not found'}`);
+      if (data.comparison?.publisher?.matched === false) details.push(`Publisher mismatch: ${data.comparison.publisher.actual || 'not found'}`);
+      if (data.comparison?.issn?.matched === false) details.push(`ISSN mismatch: ${data.comparison.issn.actual || 'not found'}`);
+      const matched = details.length === 0 && data.website?.reachable === true;
+      setCrossCheckState(previous => ({
+        ...previous,
+        [journal.id]: {
+          status: matched ? 'matched' : 'mismatch',
+          message: matched
+            ? 'Scopus record matches the live publisher website.'
+            : 'Manual review required: metadata differs from the uploaded Scopus record.',
+          details,
+        },
+      }));
+    } catch (error) {
+      setCrossCheckState(previous => ({
+        ...previous,
+        [journal.id]: {
+          status: 'unavailable',
+          message: error instanceof Error ? error.message : 'Publisher website verification failed.',
+        },
+      }));
     }
   };
 
@@ -293,13 +379,38 @@ export const WosJournalView: React.FC<WosJournalViewProps> = ({
               >
                 View Clarivate Dossier &rarr;
               </button>
-              <button
-                onClick={() => onVerifyJournal(j.issn || j.title)}
-                className="px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium transition-colors"
-              >
-                Forensic Check
-              </button>
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => handleCrossCheck(j)}
+                  disabled={crossCheckState[j.id]?.status === 'checking'}
+                  className="px-3 py-1 rounded-lg bg-teal-100 dark:bg-teal-950/60 hover:bg-teal-200 dark:hover:bg-teal-900 text-teal-800 dark:text-teal-200 font-medium transition-colors disabled:opacity-60"
+                >
+                  <Globe2 className="w-3 h-3 inline mr-1" />
+                  {crossCheckState[j.id]?.status === 'checking' ? 'Checking...' : 'Cross-check'}
+                </button>
+                <button
+                  onClick={() => onVerifyJournal(j.issn || j.title)}
+                  className="px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium transition-colors"
+                >
+                  Forensic Check
+                </button>
+              </div>
             </div>
+            {crossCheckState[j.id] && (
+              <div className={`mt-3 rounded-lg px-3 py-2 text-[11px] ${
+                crossCheckState[j.id].status === 'matched'
+                  ? 'bg-emerald-50 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300'
+                  : crossCheckState[j.id].status === 'mismatch'
+                  ? 'bg-rose-50 text-rose-800 dark:bg-rose-950/40 dark:text-rose-300'
+                  : 'bg-amber-50 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300'
+              }`}>
+                <div className="flex items-center gap-1 font-semibold">
+                  {crossCheckState[j.id].status === 'mismatch' ? <AlertTriangle className="w-3 h-3" /> : <CheckCircle2 className="w-3 h-3" />}
+                  {crossCheckState[j.id].message}
+                </div>
+                {crossCheckState[j.id].details?.map(detail => <div key={detail} className="mt-1">{detail}</div>)}
+              </div>
+            )}
           </div>
         ))}
       </div>

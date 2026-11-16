@@ -428,6 +428,85 @@ app.get('/api/cfp/search', async (req: Request, res: Response) => {
   }
 });
 
+function normalizeCrossCheckValue(value: string): string {
+  return String(value || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+function extractPublisherWebsiteMetadata(html: string): {
+  title?: string;
+  publisher?: string;
+  issns: string[];
+} {
+  const readMeta = (names: string[]): string | undefined => {
+    for (const name of names) {
+      const match = html.match(new RegExp(`<meta[^>]+(?:name|property)=["']${name}["'][^>]+content=["']([^"']+)["']`, 'i'));
+      if (match?.[1]) return match[1].trim();
+    }
+    return undefined;
+  };
+  const title = readMeta(['citation_title', 'og:title']) ||
+    html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1]?.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  const publisher = readMeta(['citation_publisher', 'publisher', 'og:site_name']);
+  const issns = [...html.matchAll(/\bISSN(?:\s*\(?(?:print|online|electronic)\)?\s*)?[:=]?\s*(\d{4}[-\s]\d{3}[\dX])\b/gi)]
+    .map(match => match[1].replace(/\s/g, '-').toUpperCase());
+  return { title, publisher, issns: [...new Set(issns)] };
+}
+
+app.post('/api/journal/cross-check', async (req: Request, res: Response) => {
+  const { website, expected } = req.body || {};
+  if (!website || typeof website !== 'string') {
+    res.status(400).json({ success: false, error: 'A publisher website URL is required for cross-checking.' });
+    return;
+  }
+
+  let targetUrl: URL;
+  try {
+    targetUrl = new URL(website);
+    if (!['http:', 'https:'].includes(targetUrl.protocol)) throw new Error('Unsupported protocol');
+  } catch {
+    res.status(400).json({ success: false, error: 'The publisher website URL is invalid.' });
+    return;
+  }
+
+  try {
+    const response = await fetch(targetUrl, {
+      headers: { 'User-Agent': 'Mozilla/5.0 Shodh Setu AI Publisher Metadata Verifier/1.0' },
+      signal: AbortSignal.timeout(10000),
+    });
+    if (!response.ok) {
+      res.status(502).json({ success: false, error: `Publisher website returned HTTP ${response.status}.` });
+      return;
+    }
+    const metadata = extractPublisherWebsiteMetadata(await response.text());
+    const expectedIssns = [expected?.issn, expected?.eIssn]
+      .filter(Boolean)
+      .map((value: string) => value.replace(/\s/g, '-').toUpperCase());
+    const titleMatched = Boolean(expected?.title && metadata.title &&
+      (normalizeCrossCheckValue(metadata.title).includes(normalizeCrossCheckValue(expected.title)) ||
+       normalizeCrossCheckValue(expected.title).includes(normalizeCrossCheckValue(metadata.title))));
+    const publisherMatched = Boolean(expected?.publisher && metadata.publisher &&
+      (normalizeCrossCheckValue(metadata.publisher).includes(normalizeCrossCheckValue(expected.publisher)) ||
+       normalizeCrossCheckValue(expected.publisher).includes(normalizeCrossCheckValue(metadata.publisher))));
+    const issnMatched = expectedIssns.length === 0 || expectedIssns.some((issn: string) => metadata.issns.includes(issn));
+
+    res.json({
+      success: true,
+      website: { url: targetUrl.toString(), reachable: true },
+      metadata,
+      comparison: {
+        title: { matched: titleMatched, expected: expected?.title || '', actual: metadata.title || '' },
+        publisher: { matched: publisherMatched, expected: expected?.publisher || '', actual: metadata.publisher || '' },
+        issn: { matched: issnMatched, expected: expectedIssns, actual: metadata.issns },
+      },
+    });
+  } catch (error: any) {
+    res.status(502).json({
+      success: false,
+      error: `Could not read the publisher website: ${error?.message || 'network error'}`,
+    });
+  }
+});
+
 // Endpoint: Crawl and audit journal archive issues and articles
 app.post('/api/archive/crawl', async (req: Request, res: Response) => {
   try {
